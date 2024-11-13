@@ -11,7 +11,7 @@ const Homepage = () => {
         <Header/>
         <MainBanner/>
         <AfterBanner/>
-        <AboutSection />
+        <AboutSection /> 
         <AfterAboutSection/>
         <Footer/>
     </div>
