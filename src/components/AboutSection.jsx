@@ -8,15 +8,15 @@ export default function AboutSection() {
         src="/blob1.svg"
         alt="Decorative blob"
         className="absolute -top-40 left-1/4 w-full md:w-3/4 lg:w-2/3 z-0"
-        style={{ transform: 'translate(-30%, -10%)' }}
+        style={{ transform: "translate(-30%, -10%)" }}
       />
-      
+
       {/* Blob 2 - Positioned behind the bottom section */}
       <img
         src="/blob2.svg"
         alt="Decorative blob"
         className="absolute bottom-48 right-2/12 w-full md:w-3/4 lg:w-2/3 z-0"
-        style={{ transform: 'translate(25%, 20%)' }}
+        style={{ transform: "translate(25%, 20%)" }}
       />
 
       <div className="max-w-screen-lg w-full z-10">

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const AfterBanner = () => {
   return (
@@ -8,7 +8,8 @@ const AfterBanner = () => {
           Find your perfect study partner and collaborate on research projects
         </h2>
         <p className="text-sm md:text-base mb-8 font-joan">
-          Join a platform that connects learners with peers, educators, and industry experts.
+          Join a platform that connects learners with peers, educators, and
+          industry experts.
         </p>
         <div className="flex justify-center space-x-4">
           <button className="bg-[#274B6D] hover:bg-[#305b84] text-[#C3DAE2] font-normal py-2 px-6 rounded-full shadow-md transition-all font-josefinSans">
@@ -21,6 +22,6 @@ const AfterBanner = () => {
       </div>
     </div>
   );
-}
+};
 
-export default AfterBanner
+export default AfterBanner;

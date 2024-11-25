@@ -76,7 +76,6 @@ const Settings = () => {
                 <option value="January">January</option>
                 <option value="February">February</option>
                 <option value="March">March</option>
-                {/* Add remaining months */}
               </select>
               <select
                 value={birthDay}

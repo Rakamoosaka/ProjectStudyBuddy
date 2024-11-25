@@ -3,9 +3,9 @@
 import './App.css'
 import Homepage from './pages/Homepage';
 import SignUp from './pages/SignUp';
-import SignUp2 from './pages/SignUp2';
 import SignIn from './pages/SignIn';
 import Settings from './pages/Settings';
+import Profile from './pages/Profile';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -20,8 +20,8 @@ function App() {
           <Route path="/home" element={<Homepage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/signup2" element={<SignUp2 />} />
           <Route path='/settings' element={<Settings />} />
+          <Route path='/profile' element={<Profile />} />
 
           <Route path="*" element={
             <div className='w-full h-screen flex justify-center items-center'>
