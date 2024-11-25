@@ -60,19 +60,6 @@ const SignUp2 = ({ onSuccess }) => {
     setErrMsg("");
   }, [user, pwd, matchPwd]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // if button enabled with JS hack
-    const v1 = USER_REGEX.test(user);
-    const v2 = PWD_REGEX.test(pwd);
-    if (!v1 || !v2) {
-      setErrMsg("Invalid Entry");
-      return;
-    }
-    console.log(user, pwd);
-    setSuccess(true);
-  };
-
   const navigate = useNavigate(); // React Router hook for navigation
 
   // Function to handle user registration
@@ -90,19 +77,20 @@ const SignUp2 = ({ onSuccess }) => {
     const userData = {
       email,
       username: user,
-      pwd,
+      password: pwd,
       birthDate: formattedDate, // Send as a single field
     };
 
     axios
-      .post("/api/auth/register", userData)
+      .post("/auth/register", userData)
       .then((response) => {
         console.log("User registered successfully:", response.data);
-        alert("Registration successful!");
+        console.log(user, pwd);
+        onSuccess(true);
       })
       .catch((error) => {
         console.error("Registration failed:", error.response || error.message);
-        setError(error.response?.data || "Failed to register. Try again.");
+        setErrMsg(error.response?.data || "Failed to register. Try again.");
       });
   };
 

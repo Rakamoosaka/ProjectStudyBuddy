@@ -3,12 +3,14 @@ import signup from "../assets/svg/signup.svg";
 import Header from "../components/Header";
 import google from "../assets/svg/google.svg";
 import axios from "../axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     if (!email || !password) {
@@ -21,11 +23,10 @@ const SignIn = () => {
 
     // Send login data to the backend
     axios
-      .post("/api/auth/login", { email, password })
+      .post("/auth/login", { email, password })
       .then((response) => {
         console.log("Login successful:", response.data);
-        alert("Login completed, now its time to beat it!");
-        // Redirect or perform other actions on success
+        navigate("/profile");
       })
       .catch((err) => {
         console.error("Error during login:", err.response || err.message);

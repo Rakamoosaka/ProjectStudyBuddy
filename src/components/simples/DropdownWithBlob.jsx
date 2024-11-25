@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom"; // React Router for navigation
 import axios from "../../axios"; // Import Axios for API calls
 import dropdownSVG from "../../assets/svg/dropdown.svg";
 import rightArrowPNG from "../../assets/svg/right-arrow.png";
+import down from "../../assets/svg/down.svg";
+import up from "../../assets/svg/up.svg";
 
 const DropdownWithBlob = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +19,7 @@ const DropdownWithBlob = () => {
   useEffect(() => {
     const fetchName = async () => {
       try {
-        const response = await axios.get("api/auth/name"); // Replace with your API URL
+        const response = await axios.get("/auth/name"); // Replace with your API URL
         setName(response.data.name); // Update the name state with the fetched name
       } catch (error) {
         console.error("Error fetching name:", error);
@@ -49,18 +51,20 @@ const DropdownWithBlob = () => {
   };
 
   return (
-    <div className="relative flex justify-center items-center min-h-screen">
-      {/* Blob in the background */}
-      <img src={dropdownSVG} alt="Blob" className="absolute" />
-
+    <div
+      onClick={toggleDropdown}
+      className="relative flex justify-center items-center py-2 px-6 font-medium text-lg shadow-sm hover:shadow-md transition-shadow rounded-lg cursor-pointer"
+    >
       {/* Dropdown button */}
       <div className="relative">
-        <button
-          className="px-6 py-3 text-[#162850] rounded-lg focus:outline-none"
-          onClick={toggleDropdown}
-        >
-          {name}
-        </button>
+        <div className="flex items-center">
+          <p className=" text-[#162850] focus:outline-none">{name}</p>
+          {isOpen ? (
+            <img src={up} alt="Up Arrow" className="ml-2" />
+          ) : (
+            <img src={down} alt="Down Arrow" className="ml-2" />
+          )}
+        </div>
 
         {/* Dropdown items */}
         {isOpen && (

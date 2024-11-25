@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import SignUp2 from "../components/SignUp2";
 import signupImage from "../assets/svg/signup.svg"; // Adjust the path if needed
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const [success, setSuccess] = useState(false);
   const handleSuccessFromChild = () => {
     setSuccess(true);
   };
+
+  useEffect(() => {
+    if (success) {
+      navigate("/profile");
+    }
+  }, [success]);
 
   return (
     <div className="flex flex-col h-screen">
@@ -24,11 +33,7 @@ const SignUp = () => {
 
         {/* Right-side content */}
         <div className="flex flex-1 w-full justify-center items-center p-4">
-          {success ? (
-            <h1>Sign Up Success</h1>
-          ) : (
-            <SignUp2 onSuccess={handleSuccessFromChild} />
-          )}
+          <SignUp2 onSuccess={handleSuccessFromChild} />
         </div>
       </div>
     </div>

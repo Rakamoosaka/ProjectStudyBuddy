@@ -13,7 +13,7 @@ const ProfilePage = () => {
       case "Buddies":
         return <BuddiesTab />;
       case "Academic":
-        return <AcademicTab />;
+        return <AcademicTab {...{ edit: true }} />;
       case "Projects":
         return <ProjectsTab />;
       default:
@@ -27,7 +27,7 @@ const ProfilePage = () => {
       <HeaderWithDropdown />
 
       {/* Profile Section */}
-      <div className="bg-[#274B6D] m-auto text-white w-10/12 p-6 rounded-lg flex flex-col justify-center gap-7 items-center md:flex-row">
+      <div className="bg-[#274B6D] mx-auto text-white w-10/12 p-6 rounded-lg flex flex-col justify-center gap-7 items-center md:flex-row">
         <img src="" alt="Profile Picture" />
         <div className="flex flex-col gap-2">
           <h2 className="text-xl font-normal">Omar</h2>
