@@ -4,7 +4,6 @@ export default function Footer() {
   return (
     <footer className="bg-[#526F8A] text-white py-10 px-8">
       <div className="max-w-screen-lg mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
-        
         {/* Logo Section */}
         <div className="text-center md:text-left">
           <h2 className="text-xl font-semibold">Study Buddy</h2>
@@ -12,15 +11,23 @@ export default function Footer() {
             Empowering learning through connection.
           </p>
         </div>
-        
+
         {/* Navigation Links */}
         <div className="flex flex-col md:flex-row md:space-x-10 text-center space-y-4 md:space-y-0">
-          <a href="#" className="hover:text-gray-300">Home</a>
-          <a href="#" className="hover:text-gray-300">Aruana's contacts</a>
-          <a href="#" className="hover:text-gray-300">Aitore's contacts</a>
-          <a href="#" className="hover:text-gray-300">Omar's contacts</a>
+          <a href="home" className="hover:text-gray-300">
+            Home
+          </a>
+          <a href="searchpage" className="hover:text-gray-300">
+            Search for buddy
+          </a>
+          <a href="profile" className="hover:text-gray-300">
+            Profile
+          </a>
+          <a href="chatpage" className="hover:text-gray-300">
+            Chats
+          </a>
         </div>
-        
+
         {/* Social Media Icons */}
         <div className="flex space-x-6 text-center">
           <a href="#" className="hover:text-gray-300" aria-label="Twitter">

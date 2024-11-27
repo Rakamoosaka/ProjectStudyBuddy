@@ -1,4 +1,5 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
 
 const AfterAboutSection = () => {
   return (
@@ -8,16 +9,20 @@ const AfterAboutSection = () => {
           Finally ready to start?
         </h2>
         <div className="flex justify-center space-x-4">
-          <button className="bg-[#274B6D] hover:bg-[#305b84] text-[#C3DAE2] font-normal py-2 px-6 rounded-full shadow-md transition-all font-josefinSans">
-            Find a study partner
-          </button>
-          <button className="bg-[#526F8A] hover:bg-[#5e7f9e] text-[#C3DAE2] font-normal py-2 px-6 rounded-full shadow-md transition-all font-josefinSans">
-            Make a profile
-          </button>
+          <Link to="/signup">
+            <button className="bg-[#274B6D] hover:bg-[#305b84] text-[#C3DAE2] font-normal py-2 px-6 rounded-full shadow-md transition-all font-josefinSans">
+              Find a study partner
+            </button>
+          </Link>
+          <Link to="/signup">
+            <button className="bg-[#526F8A] hover:bg-[#5e7f9e] text-[#C3DAE2] font-normal py-2 px-6 rounded-full shadow-md transition-all font-josefinSans">
+              Make a profile
+            </button>
+          </Link>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default AfterAboutSection;

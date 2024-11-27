@@ -16,17 +16,16 @@ const Header = () => {
         </div>
       </Link>
 
-      {/* Navigation Links and Search Bar */}
+      {/* Navigation Links and Search Button */}
       <div className="flex items-center space-x-4">
-        {/* Search Bar */}
-        <Link to="/home">
-          <div className="hidden sm:flex items-center border-2 border-[#162850] rounded-full px-3 py-1 md:px-4 md:py-2 space-x-2">
-            <input
-              type="text"
-              placeholder="search"
-              className="outline-none bg-transparent text-[#162850] text-sm md:text-base w-20 md:w-48 placeholder:text-[#162850]"
-            />
-            <button type="button" className="text-[#162850]">
+        {/* Search Button */}
+        <Link to="/searchpage">
+          <div className="hidden sm:flex items-center border-2 border-[#162850] rounded-full px-3 py-1 md:px-4 md:py-2 space-x-2 cursor-pointer">
+            <button
+              type="button"
+              className="text-[#162850] flex items-center gap-5"
+            >
+              Search
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

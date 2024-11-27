@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const AfterBanner = () => {
   return (
@@ -12,12 +13,16 @@ const AfterBanner = () => {
           industry experts.
         </p>
         <div className="flex justify-center space-x-4">
-          <button className="bg-[#274B6D] hover:bg-[#305b84] text-[#C3DAE2] font-normal py-2 px-6 rounded-full shadow-md transition-all font-josefinSans">
-            Get started
-          </button>
-          <button className="bg-[#526F8A] hover:bg-[#5e7f9e] text-[#C3DAE2] font-normal py-2 px-6 rounded-full shadow-md transition-all font-josefinSans">
-            Learn more
-          </button>
+          <Link to="/signup">
+            <button className="bg-[#274B6D] hover:bg-[#305b84] text-[#C3DAE2] font-normal py-2 px-6 rounded-full shadow-md transition-all font-josefinSans">
+              Get started
+            </button>
+          </Link>
+          <Link to="/aboutus">
+            <button className="bg-[#526F8A] hover:bg-[#5e7f9e] text-[#C3DAE2] font-normal py-2 px-6 rounded-full shadow-md transition-all font-josefinSans">
+              Learn more
+            </button>
+          </Link>
         </div>
       </div>
     </div>
