@@ -1,31 +1,26 @@
-
-
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Joan&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Joan&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Rubik+Glitch&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-
-
 .blob {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    background-color: #CDF5FD;
-    border-radius: 50%;
-    opacity: 0.5;
-  }
-
-body {
-    background-color: #F6F7FF;
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background-color: #cdf5fd;
+  border-radius: 50%;
+  opacity: 0.5;
 }
 
-.margins{
+body {
+  background-color: #f6f7ff;
+}
+
+.margins {
   margin-left: 10%;
   margin-right: 10%;
 }

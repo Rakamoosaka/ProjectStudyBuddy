@@ -1,12 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"; // For getting username from URL
 import BuddiesTab from "../components/BuddiesTab";
 import AcademicTab from "../components/AcademicTab";
 import ProjectsTab from "../components/ProjectsTab";
 import HeaderWithDropdown from "../components/HeaderWithDropdown";
+import axios from "../axios"; // Assuming axios is already configured for your API
 import tabsSVG from "../assets/svg/tabsSVG.svg";
+import Footer from "../components/Footer";
 
-const ProfilePage = () => {
+const Profile = () => {
+  const { username } = useParams(); // Get username from URL
+  const [userData, setUserData] = useState(null);
   const [activeTab, setActiveTab] = useState("Buddies");
+
+  useEffect(() => {
+    // Fetch user profile data from the backend
+    axios
+      .get(`/profile/${username}`)
+      .then((response) => {
+        setUserData(response.data); // Populate user data
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(
+          "Error fetching user profile:",
+          error.response || error.message
+        );
+      });
+  }, [username]);
 
   const renderTab = () => {
     switch (activeTab) {
@@ -21,6 +42,14 @@ const ProfilePage = () => {
     }
   };
 
+  if (!userData) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#f6f7ff] font-josefinSans min-h-screen flex flex-col gap-6">
       {/* Header Section */}
@@ -28,17 +57,22 @@ const ProfilePage = () => {
 
       {/* Profile Section */}
       <div className="bg-[#274B6D] mx-auto text-white w-10/12 p-6 rounded-lg flex flex-col justify-center gap-7 items-center md:flex-row">
-        <img src="" alt="Profile Picture" />
+        <img
+          src={userData.profilePicture || "https://via.placeholder.com/150"} // Replace with actual image URL field
+          alt={`${userData.username}'s profile`}
+          className="rounded-full w-32 h-32"
+        />
         <div className="flex flex-col gap-2">
-          <h2 className="text-xl font-normal">Omar</h2>
-          <p className="text-sm">Known languages: English, Russian</p>
+          <h2 className="text-xl font-normal">{userData.username}</h2>
           <p className="text-sm">
-            About me: Naruto potato aitore motato i like banana monkey super
-            strit
+            Known languages: {userData.language || "Unknown"}
+          </p>
+          <p className="text-sm">
+            About me: {userData.about || "No details provided."}
           </p>
         </div>
         <button className="bg-[#C2DAE1] text-[#274B6D] px-7 mt-auto rounded-lg">
-          edit profile
+          Edit profile
         </button>
       </div>
 
@@ -63,8 +97,9 @@ const ProfilePage = () => {
 
       {/* Dynamic Content Section */}
       <div className="flex-grow">{renderTab()}</div>
+      <Footer />
     </div>
   );
 };
 
-export default ProfilePage;
+export default Profile;

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Footer from "../components/Footer";
 
 // Utility function to generate random data
 const generateRandomChats = () => {
@@ -77,100 +78,103 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex h-screen bg-[#F6F7FF] font-josefinSans">
-      {/* Left Sidebar */}
-      <div className="w-1/4 bg-[#274B6D] text-white flex flex-col">
-        {/* Search Section */}
-        <div className="p-4 border-b border-[#162850]">
-          <h2 className="text-lg font-semibold">Chats</h2>
-          <input
-            type="text"
-            placeholder="Search"
-            className="w-full mt-2 px-3 py-2 text-sm bg-[#162850] rounded-md placeholder-gray-400 focus:outline-none"
-          />
-          <div className="flex mt-3 justify-between">
-            <button className="bg-[#89CFF3] px-4 py-1 rounded-full text-xs">
-              All
-            </button>
-            <button className="bg-[#162850] px-4 py-1 rounded-full text-xs">
-              Unread
-            </button>
-            <button className="bg-[#162850] px-4 py-1 rounded-full text-xs">
-              Groups
-            </button>
-          </div>
-        </div>
-
-        {/* Chat List */}
-        <div className="flex-1 overflow-y-auto">
-          {chats.map((chat) => (
-            <div
-              key={chat.id}
-              onClick={() => setSelectedChat(chat)} // Update selected chat
-              className={`p-4 flex items-center cursor-pointer hover:bg-[#162850] ${
-                selectedChat.id === chat.id ? "bg-[#162850]" : ""
-              }`}
-            >
-              <div className="w-10 h-10 rounded-full bg-[#89CFF3]"></div>
-              <div className="ml-3">
-                <h3 className="font-medium">{chat.name}</h3>
-                <p className="text-xs text-gray-300">{chat.lastMessage}</p>
-              </div>
+    <div className="flex flex-col">
+      <div className="flex h-screen bg-[#F6F7FF] font-josefinSans">
+        {/* Left Sidebar */}
+        <div className="w-1/4 bg-[#274B6D] text-white flex flex-col">
+          {/* Search Section */}
+          <div className="p-4 border-b border-[#162850]">
+            <h2 className="text-lg font-semibold">Chats</h2>
+            <input
+              type="text"
+              placeholder="Search"
+              className="w-full mt-2 px-3 py-2 text-sm bg-[#162850] rounded-md placeholder-gray-400 focus:outline-none"
+            />
+            <div className="flex mt-3 justify-between">
+              <button className="bg-[#89CFF3] px-4 py-1 rounded-full text-xs">
+                All
+              </button>
+              <button className="bg-[#162850] px-4 py-1 rounded-full text-xs">
+                Unread
+              </button>
+              <button className="bg-[#162850] px-4 py-1 rounded-full text-xs">
+                Groups
+              </button>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Chat Area */}
-      <div className="flex-1 flex flex-col bg-[#274B6D]">
-        {/* Chat Header */}
-        <div className="p-4 border-b border-[#162850] flex items-center justify-between">
-          <div>
-            <h2 className="text-lg text-white">{selectedChat.name}</h2>
-            <p className="text-sm text-gray-300">
-              Last online: {selectedChat.lastSeen}
-            </p>
           </div>
-          <div className="text-white cursor-pointer">☰</div>
-        </div>
 
-        {/* Chat Messages */}
-        <div className="flex-1 overflow-y-auto p-4 bg-[#162850]">
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`flex ${
-                msg.sentByMe ? "justify-end" : "justify-start"
-              } mb-3`}
-            >
+          {/* Chat List */}
+          <div className="flex-1 overflow-y-auto">
+            {chats.map((chat) => (
               <div
-                className={`${
-                  msg.sentByMe ? "bg-[#89CFF3]" : "bg-[#162850]"
-                } text-white px-4 py-2 rounded-lg max-w-xs`}
+                key={chat.id}
+                onClick={() => setSelectedChat(chat)} // Update selected chat
+                className={`p-4 flex items-center cursor-pointer hover:bg-[#162850] ${
+                  selectedChat.id === chat.id ? "bg-[#162850]" : ""
+                }`}
               >
-                {msg.text}
+                <div className="w-10 h-10 rounded-full bg-[#89CFF3]"></div>
+                <div className="ml-3">
+                  <h3 className="font-medium">{chat.name}</h3>
+                  <p className="text-xs text-gray-300">{chat.lastMessage}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        {/* Message Input */}
-        <div className="p-4 border-t border-[#162850] flex items-center">
-          <input
-            type="text"
-            placeholder="Message"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            className="flex-1 px-4 py-2 text-sm rounded-md bg-[#162850] text-white focus:outline-none"
-          />
-          <button
-            onClick={handleSendMessage}
-            className="ml-3 bg-[#89CFF3] text-white px-4 py-2 rounded-lg"
-          >
-            ➤
-          </button>
+        {/* Chat Area */}
+        <div className="flex-1 flex flex-col bg-[#274B6D]">
+          {/* Chat Header */}
+          <div className="p-4 border-b border-[#162850] flex items-center justify-between">
+            <div>
+              <h2 className="text-lg text-white">{selectedChat.name}</h2>
+              <p className="text-sm text-gray-300">
+                Last online: {selectedChat.lastSeen}
+              </p>
+            </div>
+            <div className="text-white cursor-pointer">☰</div>
+          </div>
+
+          {/* Chat Messages */}
+          <div className="flex-1 overflow-y-auto p-4 bg-[#162850]">
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`flex ${
+                  msg.sentByMe ? "justify-end" : "justify-start"
+                } mb-3`}
+              >
+                <div
+                  className={`${
+                    msg.sentByMe ? "bg-[#89CFF3]" : "bg-[#162850]"
+                  } text-white px-4 py-2 rounded-lg max-w-xs`}
+                >
+                  {msg.text}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Message Input */}
+          <div className="p-4 border-t border-[#162850] flex items-center">
+            <input
+              type="text"
+              placeholder="Message"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              className="flex-1 px-4 py-2 text-sm rounded-md bg-[#162850] text-white focus:outline-none"
+            />
+            <button
+              onClick={handleSendMessage}
+              className="ml-3 bg-[#89CFF3] text-white px-4 py-2 rounded-lg"
+            >
+              ➤
+            </button>
+          </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import HeaderWithDropdown from "../components/HeaderWithDropdown";
 import askhat from "../assets/askhat-profile.png";
 import dropdownSVG from "../assets/svg/dropdown.svg";
 import AcademicTab from "../components/AcademicTab";
+import Footer from "../components/Footer";
 
 const ProfilePage = () => {
   return (
@@ -53,6 +54,7 @@ const ProfilePage = () => {
 
       {/* Strengths and Weaknesses */}
       <AcademicTab />
+      <Footer />
     </div>
   );
 };

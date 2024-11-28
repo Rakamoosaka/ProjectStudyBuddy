@@ -4,13 +4,17 @@ import Header from "../components/Header";
 import google from "../assets/svg/google.svg";
 import axios from "../axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../hooks/UserContext";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const { setUsername } = useUser();
   const navigate = useNavigate();
+
+  const { isLoggedIn, setIsLoggedIn } = useUser();
 
   const handleLogin = () => {
     if (!email || !password) {
@@ -18,15 +22,17 @@ const SignIn = () => {
       return;
     }
 
-    // Clear any previous error
+    // Clear previous error
     setError("");
 
     // Send login data to the backend
     axios
       .post("/auth/login", { email, password })
       .then((response) => {
-        console.log("Login successful:", response.data);
-        navigate("/profile");
+        const { username } = response.data; // Get username from backend response
+        setUsername(username); // Store username in global context
+        setIsLoggedIn(true); // Set login state to true
+        navigate(`/profile/${username}`); // Redirect to profile page
       })
       .catch((err) => {
         console.error("Error during login:", err.response || err.message);

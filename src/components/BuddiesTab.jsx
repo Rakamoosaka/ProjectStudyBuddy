@@ -4,6 +4,7 @@ import trashBinSVG from "../assets/svg/trashBinSVG.svg";
 import MyFriends from "../components/simples/MyFriends";
 import RequestsFromMe from "../components/simples/RequestsFromMe";
 import RequestsToMe from "../components/simples/RequestsToMe";
+import { useNavigate } from "react-router-dom";
 
 const BuddiesTab = () => {
   // State to manage the friends list
@@ -14,6 +15,8 @@ const BuddiesTab = () => {
 
   // State to manage dropdown visibility
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const somepeople = [
     {

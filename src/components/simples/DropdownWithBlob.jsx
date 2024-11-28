@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // React Router for navigation
 import axios from "../../axios"; // Import Axios for API calls
-import dropdownSVG from "../../assets/svg/dropdown.svg";
 import rightArrowPNG from "../../assets/svg/right-arrow.png";
 import down from "../../assets/svg/down.svg";
 import up from "../../assets/svg/up.svg";
+import { useUser } from "../../hooks/UserContext";
 
 const DropdownWithBlob = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("Loading..."); // Default loading text for the button
   const navigate = useNavigate(); // React Router hook for navigation
+  const { username, logout } = useUser();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -19,8 +20,7 @@ const DropdownWithBlob = () => {
   useEffect(() => {
     const fetchName = async () => {
       try {
-        const response = await axios.get("/auth/name"); // Replace with your API URL
-        setName(response.data.name); // Update the name state with the fetched name
+        setName(username);
       } catch (error) {
         console.error("Error fetching name:", error);
         setName("Error"); // Fallback if the fetch fails
@@ -31,22 +31,13 @@ const DropdownWithBlob = () => {
   }, []); // Empty dependency array ensures this runs only once on component mount
 
   const dropdownButtons = [
-    { label: "profile", path: "/profile" },
-    { label: "messages", path: "/messages" },
+    { label: "profile", path: `/profile/${username}` },
+    { label: "messages", path: "/chatpage" },
     { label: "about us", path: "/about-us" },
   ];
 
   const handleLogout = () => {
-    // Clear any authentication data
-    localStorage.removeItem("authToken"); // Example: remove token from localStorage
-    sessionStorage.clear(); // Clear session data if necessary
-
-    // Optionally notify the backend
-    axios.post("/api/auth/logout").catch((error) => {
-      console.error("Error during logout:", error);
-    });
-
-    // Redirect to login page
+    logout();
     navigate("/signin");
   };
 

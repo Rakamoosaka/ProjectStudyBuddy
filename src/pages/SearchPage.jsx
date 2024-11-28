@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import HeaderWithDropdown from "../components/HeaderWithDropdown";
+import Footer from "../components/Footer";
 
 const SearchPage = () => {
   const subjects = ["Discrete Math", "ICT", "UX/UI design"];
@@ -151,6 +152,7 @@ const SearchPage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
