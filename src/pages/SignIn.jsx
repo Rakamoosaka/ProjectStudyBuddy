@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import signup from "../assets/svg/signup.svg";
 import Header from "../components/Header";
-import google from "../assets/svg/google.svg";
 import axios from "../axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/UserContext";
@@ -11,12 +10,18 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { setUsername } = useUser();
+  const { username, isLoggedIn, setUsername, setIsLoggedIn } = useUser();
   const navigate = useNavigate();
 
-  const { isLoggedIn, setIsLoggedIn } = useUser();
+  useEffect(() => {
+    // Redirect to profile if already logged in
+    if (isLoggedIn && username) {
+      navigate(`/profile/${username}`);
+    }
+  }, [isLoggedIn, username, navigate]);
 
-  const handleLogin = () => {
+  const handleLogin = (event) => {
+    event.preventDefault(); // Prevent default form submission
     if (!email || !password) {
       setError("Both email and password are required.");
       return;
@@ -57,7 +62,10 @@ const SignIn = () => {
 
         {/* Centered login form, full-width on small screens */}
         <div className="flex flex-1 w-full justify-center items-center p-4 mb-32 ">
-          <div className="flex flex-col items-start p-6 rounded-lg text-[#1b0d13] w-full max-w-md">
+          <form
+            onSubmit={handleLogin} // Attach the handleLogin function
+            className="flex flex-col items-start p-6 rounded-lg text-[#1b0d13] w-full max-w-md"
+          >
             <h2 className="text-2xl font-medium text-[#274B6D] mb-6 font-josefinSans self-center">
               Log in
             </h2>
@@ -88,7 +96,7 @@ const SignIn = () => {
 
             <div className="flex flex-col w-full mt-4 items-center">
               <button
-                onClick={handleLogin}
+                type="submit" // Ensure the button is a submit button
                 className={`bg-[#162850] font-josefinSans w-full text-base text-white px-6 py-2 rounded-lg font-normal ${
                   email && password ? "" : "opacity-80 cursor-not-allowed"
                 }`}
@@ -102,7 +110,7 @@ const SignIn = () => {
                 Create an account
               </Link>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

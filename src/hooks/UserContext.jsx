@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 // Create UserContext
 const UserContext = createContext();
@@ -8,12 +8,25 @@ export const useUser = () => useContext(UserContext);
 
 // Provider component to wrap your app and provide the username and login state globally
 export const UserProvider = ({ children }) => {
-  const [username, setUsername] = useState(null); // Holds the username globally
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Tracks if the user is logged in
+  const [username, setUsername] = useState(() =>
+    localStorage.getItem("username")
+  );
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    () => !!localStorage.getItem("username")
+  );
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      localStorage.setItem("username", username); // Store username
+    } else {
+      localStorage.removeItem("username"); // Clear username
+    }
+  }, [isLoggedIn, username]);
 
   const logout = () => {
     setUsername(null);
     setIsLoggedIn(false);
+    localStorage.removeItem("username");
   };
 
   return (

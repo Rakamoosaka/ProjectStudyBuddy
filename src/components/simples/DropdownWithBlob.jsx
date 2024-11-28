@@ -1,104 +1,86 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // React Router for navigation
-import axios from "../../axios"; // Import Axios for API calls
 import rightArrowPNG from "../../assets/svg/right-arrow.png";
 import down from "../../assets/svg/down.svg";
 import up from "../../assets/svg/up.svg";
-import { useUser } from "../../hooks/UserContext";
+import { useUser } from "../../hooks/UserContext"; // Import UserContext
 
 const DropdownWithBlob = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [name, setName] = useState("Loading..."); // Default loading text for the button
+  const [isOpen, setIsOpen] = useState(false); // Dropdown open/close state
+  const { username, logout } = useUser(); // Access username and logout from context
   const navigate = useNavigate(); // React Router hook for navigation
-  const { username, logout } = useUser();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  // Fetch the name from the backend
-  useEffect(() => {
-    const fetchName = async () => {
-      try {
-        setName(username);
-      } catch (error) {
-        console.error("Error fetching name:", error);
-        setName("Error"); // Fallback if the fetch fails
-      }
-    };
-
-    fetchName();
-  }, []); // Empty dependency array ensures this runs only once on component mount
-
   const dropdownButtons = [
-    { label: "profile", path: `/profile/${username}` },
-    { label: "messages", path: "/chatpage" },
-    { label: "about us", path: "/about-us" },
+    { label: "Profile", path: `/profile/${username}` },
+    { label: "Messages", path: "/chatpage" },
+    { label: "About Us", path: "/about-us" },
   ];
 
   const handleLogout = () => {
-    logout();
-    navigate("/signin");
+    logout(); // Clear user state and session
+    navigate("/signin"); // Redirect to signin page
   };
 
   return (
-    <div
-      onClick={toggleDropdown}
-      className="relative flex justify-center items-center py-2 px-6 font-medium text-lg shadow-sm hover:shadow-md transition-shadow rounded-lg cursor-pointer"
-    >
+    <div className="relative flex justify-center items-center">
       {/* Dropdown button */}
-      <div className="relative">
-        <div className="flex items-center">
-          <p className=" text-[#162850] focus:outline-none">{name}</p>
-          {isOpen ? (
-            <img src={up} alt="Up Arrow" className="ml-2" />
-          ) : (
-            <img src={down} alt="Down Arrow" className="ml-2" />
-          )}
-        </div>
-
-        {/* Dropdown items */}
-        {isOpen && (
-          <div className="absolute top-12 left-1">
-            <ul className="flex flex-col">
-              <li className="flex items-center px-4 text-[#162850] mt-0.5 py-1 bg-[#C2DAE1] rounded-full">
-                <button
-                  className="flex items-center w-full"
-                  onClick={() => navigate("/settings")}
-                >
-                  Settings
-                  <img
-                    src={rightArrowPNG}
-                    alt="Right Arrow"
-                    className="w-2 h-2 ml-2"
-                  />
-                </button>
-              </li>
-              {dropdownButtons.map((item) => (
-                <li
-                  key={item.label}
-                  className="px-4 text-[#162850] mt-0.5 py-1 hover:bg-[#a3c4cf] cursor-pointer bg-[#C2DAE1] rounded-full"
-                >
-                  <button
-                    className="w-full text-left"
-                    onClick={() => navigate(item.path)}
-                  >
-                    {item.label}
-                  </button>
-                </li>
-              ))}
-              <li className="px-4 text-[#162850] mt-0.5 py-1 hover:bg-[#a3c4cf] cursor-pointer bg-[#C2DAE1] rounded-full">
-                <button
-                  className="w-full text-left text-[#ae2b2b]"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-              </li>
-            </ul>
-          </div>
+      <div
+        onClick={toggleDropdown}
+        className="flex justify-center items-center py-2 px-6 font-medium text-lg shadow-sm hover:shadow-md transition-shadow rounded-lg cursor-pointer"
+      >
+        <p className="text-[#162850] focus:outline-none">
+          {username || "Loading..."}
+        </p>
+        {isOpen ? (
+          <img src={up} alt="Up Arrow" className="ml-2" />
+        ) : (
+          <img src={down} alt="Down Arrow" className="ml-2" />
         )}
       </div>
+
+      {/* Dropdown items */}
+      {isOpen && (
+        <ul className="absolute top-full mt-2 bg-[#f6f7ff] rounded-lg shadow-lg">
+          <li className="px-4 text-[#162850] mt-0.5 py-1 hover:bg-[#e7e8ef] cursor-pointer rounded-lg">
+            <button
+              className="flex items-center justify-center w-full"
+              onClick={() => navigate("/settings")}
+            >
+              Settings
+              <img
+                src={rightArrowPNG}
+                alt="Right Arrow"
+                className="w-2 h-2 ml-2"
+              />
+            </button>
+          </li>
+          {dropdownButtons.map((item) => (
+            <li
+              key={item.label}
+              className="px-4 text-[#162850] mt-0.5 py-1 hover:bg-[#e7e8ef] cursor-pointer rounded-lg"
+            >
+              <button
+                className="w-full text-left"
+                onClick={() => navigate(item.path)}
+              >
+                {item.label}
+              </button>
+            </li>
+          ))}
+          <li className="px-4 text-[#162850] mt-0.5 py-1 hover:bg-[#e7e8ef] cursor-pointer rounded-lg">
+            <button
+              className="w-full text-left text-[#ae2b2b]"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </li>
+        </ul>
+      )}
     </div>
   );
 };

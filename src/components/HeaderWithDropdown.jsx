@@ -31,10 +31,6 @@ const HeaderWithDropdown = ({ search }) => {
 
         {/* Dropdown With Blob */}
         <div className="relative h-full flex items-center">
-          {/* Blob */}
-          <div className="absolute -z-10 w-full h-full bg-[#CDF5FD] blur-3xl rounded-full"></div>
-
-          {/* Dropdown Button */}
           <DropdownWithBlob />
         </div>
       </div>
