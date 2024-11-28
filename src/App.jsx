@@ -12,6 +12,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./components/simples/ErrorPage";
 import { UserProvider } from "./hooks/UserContext"; // Import UserProvider
 import ProtectedRoute from "./components/ProtectedRoute";
+import AboutUs from "./pages/AboutUs";
 
 // Create routes
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/about-us",
+    element: <AboutUs />,
   },
   {
     element: <ProtectedRoute />, // Protect these routes

@@ -18,7 +18,7 @@ const AfterBanner = () => {
               Get started
             </button>
           </Link>
-          <Link to="/aboutus">
+          <Link to="/about-us">
             <button className="bg-[#526F8A] hover:bg-[#5e7f9e] text-[#C3DAE2] font-normal py-2 px-6 rounded-full shadow-md transition-all font-josefinSans">
               Learn more
             </button>
