@@ -11,7 +11,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { setUsername, setIsLoggedIn } = useUser();
+  const { login } = useUser(); // Use login from context
 
   const [email, setEmail] = useState("");
   const [username, setUser] = useState("");
@@ -30,12 +30,10 @@ const SignUp = () => {
   const [validPassword, setValidPassword] = useState(false);
   const [validMatch, setValidMatch] = useState(false);
 
-  // Focus on username input on load
   useEffect(() => {
     userRef.current?.focus();
   }, []);
 
-  // Validate inputs on state change
   useEffect(() => {
     setValidEmail(EMAIL_REGEX.test(email));
     setValidUsername(USER_REGEX.test(username));
@@ -59,19 +57,21 @@ const SignUp = () => {
         email,
         username,
         password,
-        birthDate: formattedDate,
       };
 
       const response = await axios.post("/auth/register", userData);
-      console.log("User registered successfully:", response.data);
+      const { token } = response.data; // Extract token from response
 
-      setUsername(username); // Set username in context
-      setIsLoggedIn(true); // Mark user as logged in
-      navigate(`/profile/${username}`); // Redirect to profile page
+      // Use login function from context
+      login(token, username);
+
+      // Redirect to profile page
+      navigate(`/profile/${username}`);
     } catch (error) {
       console.error("Registration failed:", error.response || error.message);
       setErrorMsg(
-        error.response?.data || "Registration failed. Please try again."
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
       );
     }
   };
@@ -128,24 +128,16 @@ const SignUp = () => {
                 onChange={(e) => setBirthMonth(e.target.value)}
                 className="w-6/12 p-2 text-lg rounded-lg border font-josefinSans border-[#162850] focus:outline-none bg-[#F6F7FF]"
               >
-                {[
-                  "January",
-                  "February",
-                  "March",
-                  "April",
-                  "May",
-                  "June",
-                  "July",
-                  "August",
-                  "September",
-                  "October",
-                  "November",
-                  "December",
-                ].map((month) => (
-                  <option key={month} value={month}>
-                    {month}
-                  </option>
-                ))}
+                {[...Array(12)].map((_, idx) => {
+                  const month = new Date(0, idx).toLocaleString("en-US", {
+                    month: "long",
+                  });
+                  return (
+                    <option key={month} value={month}>
+                      {month}
+                    </option>
+                  );
+                })}
               </select>
               <select
                 value={birthDay}

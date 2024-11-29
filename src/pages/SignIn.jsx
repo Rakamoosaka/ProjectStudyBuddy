@@ -4,40 +4,45 @@ import Header from "../components/Header";
 import axios from "../axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/UserContext";
+import { jwtDecode } from "jwt-decode";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { username, isLoggedIn, setUsername, setIsLoggedIn } = useUser();
+  const { login } = useUser(); // Use login from context
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Redirect to profile if already logged in
-    if (isLoggedIn && username) {
-      navigate(`/profile/${username}`);
-    }
-  }, [isLoggedIn, username, navigate]);
-
   const handleLogin = (event) => {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
+
     if (!email || !password) {
       setError("Both email and password are required.");
       return;
     }
 
-    // Clear previous error
     setError("");
 
-    // Send login data to the backend
     axios
       .post("/auth/login", { email, password })
       .then((response) => {
-        const { username } = response.data; // Get username from backend response
-        setUsername(username); // Store username in global context
-        setIsLoggedIn(true); // Set login state to true
-        navigate(`/profile/${username}`); // Redirect to profile page
+        const { token, username } = response.data;
+
+        // Optional: Validate token here
+        try {
+          const decodedToken = jwtDecode(token);
+          const currentTime = Date.now() / 1000;
+          if (decodedToken.exp > currentTime) {
+            login(token, username); // Use login from context
+            navigate(`/profile/${username}`);
+          } else {
+            throw new Error("Token expired");
+          }
+        } catch (error) {
+          setError("Invalid or expired token.");
+          console.error("Login error:", error);
+        }
       })
       .catch((err) => {
         console.error("Error during login:", err.response || err.message);
@@ -51,7 +56,7 @@ const SignIn = () => {
     <div className="flex flex-col h-screen">
       <Header />
       <div className="flex w-full h-full">
-        {/* Left-side image, hidden on smaller screens */}
+        {/* Left-side image */}
         <div className="hidden xl:flex h-full items-center bg-[#F6F7FF]">
           <img
             src={signup}
@@ -60,10 +65,10 @@ const SignIn = () => {
           />
         </div>
 
-        {/* Centered login form, full-width on small screens */}
-        <div className="flex flex-1 w-full justify-center items-center p-4 mb-32 ">
+        {/* Login form */}
+        <div className="flex flex-1 w-full justify-center items-center p-4 mb-32">
           <form
-            onSubmit={handleLogin} // Attach the handleLogin function
+            onSubmit={handleLogin}
             className="flex flex-col items-start p-6 rounded-lg text-[#1b0d13] w-full max-w-md"
           >
             <h2 className="text-2xl font-medium text-[#274B6D] mb-6 font-josefinSans self-center">
@@ -96,7 +101,7 @@ const SignIn = () => {
 
             <div className="flex flex-col w-full mt-4 items-center">
               <button
-                type="submit" // Ensure the button is a submit button
+                type="submit"
                 className={`bg-[#162850] font-josefinSans w-full text-base text-white px-6 py-2 rounded-lg font-normal ${
                   email && password ? "" : "opacity-80 cursor-not-allowed"
                 }`}
