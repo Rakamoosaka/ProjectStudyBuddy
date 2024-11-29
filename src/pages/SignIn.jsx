@@ -61,7 +61,7 @@ const SignIn = () => {
           <img
             src={signup}
             alt="Signup Illustration"
-            className="max-w-full max-h-full"
+            className="w-full max-w-md h-48 object-cover rounded-md"
           />
         </div>
 

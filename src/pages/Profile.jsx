@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // For getting username from URL
+import { useNavigate } from "react-router-dom"; // For redirecting if needed
 import BuddiesTab from "../components/BuddiesTab";
 import AcademicTab from "../components/AcademicTab";
 import ProjectsTab from "../components/ProjectsTab";
@@ -9,32 +9,59 @@ import tabsSVG from "../assets/svg/tabsSVG.svg";
 import Footer from "../components/Footer";
 
 const Profile = () => {
-  const { username } = useParams(); // Get username from URL
+  const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [activeTab, setActiveTab] = useState("Buddies");
 
   useEffect(() => {
-    // Fetch user profile data from the backend
-    axios
-      .get(`/profile/${username}`)
-      .then((response) => {
-        setUserData(response.data); // Populate user data
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(
-          "Error fetching user profile:",
-          error.response || error.message
-        );
-      });
-  }, [username]);
+    const fetchProfileData = async () => {
+      const token = localStorage.getItem("jwt");
+
+      if (!token) {
+        navigate("/signin");
+        return;
+      }
+
+      try {
+        const [nicknameResponse, aboutResponse, languagesResponse] =
+          await Promise.all([
+            axios.get("/user/profile/nickname", {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            axios.get("/user/profile/about", {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            axios.get("/user/profile/language", {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+          ]);
+
+        setUserData({
+          username: nicknameResponse.data,
+          about: aboutResponse.data,
+          language:
+            languagesResponse.data
+              .map((lang) => lang.languageName)
+              .join(", ") || "Unknown",
+          profilePicture: "https://via.placeholder.com/150", // Placeholder, replace if the backend provides a URL
+        });
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        if (error.response?.status === 401) {
+          navigate("/signin");
+        }
+      }
+    };
+
+    fetchProfileData();
+  }, [navigate]);
 
   const renderTab = () => {
     switch (activeTab) {
       case "Buddies":
         return <BuddiesTab />;
       case "Academic":
-        return <AcademicTab {...{ edit: true }} />;
+        return <AcademicTab edit={true} />;
       case "Projects":
         return <ProjectsTab />;
       default:
@@ -58,15 +85,13 @@ const Profile = () => {
       {/* Profile Section */}
       <div className="bg-[#274B6D] mx-auto text-white w-10/12 p-6 rounded-lg flex flex-col justify-center gap-7 items-center md:flex-row">
         <img
-          src={userData.profilePicture || "https://via.placeholder.com/150"} // Replace with actual image URL field
+          src={userData.profilePicture} // Use dynamic profile picture URL
           alt={`${userData.username}'s profile`}
-          className="rounded-full w-32 h-32"
+          className=" h-48 object-cover rounded-md"
         />
         <div className="flex flex-col gap-2">
           <h2 className="text-xl font-normal">{userData.username}</h2>
-          <p className="text-sm">
-            Known languages: {userData.language || "Unknown"}
-          </p>
+          <p className="text-sm">Known languages: {userData.language}</p>
           <p className="text-sm">
             About me: {userData.about || "No details provided."}
           </p>
@@ -78,7 +103,7 @@ const Profile = () => {
 
       {/* Navigation Section */}
       <div className="flex justify-center my-4">
-        <img src={tabsSVG} className="absolute" />
+        <img src={tabsSVG} className="absolute" alt="Tabs background" />
         {["Academic", "Buddies", "Projects"].map((tab) => (
           <div
             key={tab}
