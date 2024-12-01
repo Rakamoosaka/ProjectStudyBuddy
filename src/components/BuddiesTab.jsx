@@ -81,18 +81,22 @@ const BuddiesTab = () => {
           ))}
         </div>
         {/* Requests Section with Dropdown */}
-        <div className="mt-6">
+        <div className="mt-6 flex flex-wrap gap-3 relative">
           <button
             onClick={toggleDropdown}
-            className="text-left bg-[#C2DAE1] py-3 px-4 shadow-sm rounded-lg text-lg font-medium"
+            className="bg-[#C2DAE1] py-3 px-4 shadow-sm rounded-lg text-lg font-medium flex items-center justify-between w-40"
           >
-            Requests {isDropdownOpen ? "▲" : "▼"}
+            Requests
+            <span className="ml-2">{isDropdownOpen ? "▲" : "▼"}</span>
           </button>
           {isDropdownOpen && (
-            <div className="bg-white w-[110px] shadow-lg rounded-lg mt-2 absolute">
+            <div
+              className="bg-white w-40 shadow-lg rounded-lg mt-2 absolute z-10"
+              style={{ top: "100%", left: 0 }}
+            >
               <button
                 onClick={() => handleComponentChange("RequestsFromMe")}
-                className="block text-left px-4 py-2 w-full hover:bg-gray-100"
+                className="block text-left px-4 py-2 w-full hover:bg-gray-100 border-b border-gray-200"
               >
                 From me
               </button>
@@ -104,7 +108,14 @@ const BuddiesTab = () => {
               </button>
             </div>
           )}
+          <button
+            onClick={() => handleComponentChange("MyFriends")}
+            className="bg-[#C2DAE1] py-3 px-4 shadow-sm rounded-lg text-lg font-medium w-40"
+          >
+            My Friends
+          </button>
         </div>
+
         <div className="flex justify-end mt-4">
           <button
             className="bg-[#C3DAE2] p-4 rounded-lg shadow-lg flex items-center justify-center"

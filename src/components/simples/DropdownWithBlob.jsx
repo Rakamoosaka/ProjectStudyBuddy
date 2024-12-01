@@ -3,13 +3,17 @@ import { useNavigate } from "react-router-dom"; // React Router for navigation
 import rightArrowPNG from "../../assets/svg/right-arrow.png";
 import down from "../../assets/svg/down.svg";
 import up from "../../assets/svg/up.svg";
-import { useUser } from "../../hooks/UserContext"; // Import UserContext
+import useAuth from "../../hooks/useAuth";
+import { useLogout } from "../../hooks/logout";
 
 const DropdownWithBlob = () => {
   const [isOpen, setIsOpen] = useState(false); // Dropdown open/close state
-  const { username, logout } = useUser(); // Access username and logout from context
   const navigate = useNavigate(); // React Router hook for navigation
 
+  const handleLogout = useLogout();
+
+  const username = localStorage.getItem("username");
+  console.log(username);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -19,11 +23,6 @@ const DropdownWithBlob = () => {
     { label: "Messages", path: "/chatpage" },
     { label: "About Us", path: "/about-us" },
   ];
-
-  const handleLogout = () => {
-    logout(); // Clear user state and session
-    navigate("/signin"); // Redirect to signin page
-  };
 
   return (
     <div className="relative flex justify-center items-center">

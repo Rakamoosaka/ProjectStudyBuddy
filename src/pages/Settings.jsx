@@ -1,30 +1,91 @@
 import React, { useState } from "react";
+import axios from "axios";
 import HeaderWithDropdown from "../components/HeaderWithDropdown";
-import google from "../assets/svg/google.svg";
+import useAuth from "../hooks/useAuth";
+import { useLogout } from "../hooks/logout";
 
 const Settings = () => {
-  const [nickname, setNickname] = useState("Omar");
+  const handleLogout = useLogout();
+
+  const { auth } = useAuth();
+
+  const [nickname, setNickname] = useState(`${auth.username}`);
   const [language, setLanguage] = useState("English");
   const [birthMonth, setBirthMonth] = useState("March");
   const [birthDay, setBirthDay] = useState(22);
   const [birthYear, setBirthYear] = useState(2002);
   const [country, setCountry] = useState("Kazakhstan");
-  const [email, setEmail] = useState("sup4anski@gmail.com");
+  const [email, setEmail] = useState(`${auth.email}`);
 
-  const handleLinkAccount = () => {
-    console.log("Link account clicked");
+  const monthMapping = {
+    January: "01",
+    February: "02",
+    March: "03",
+    April: "04",
+    May: "05",
+    June: "06",
+    July: "07",
+    August: "08",
+    September: "09",
+    October: "10",
+    November: "11",
+    December: "12",
   };
 
-  const handlePasswordChange = () => {
-    console.log("Change password clicked");
+  const handleUpdateSettings = async () => {
+    const updatedSettings = {
+      username: nickname,
+      system_language: language,
+      country,
+      email,
+      dateOfBirth: `${birthYear}-${monthMapping[birthMonth]}-${String(
+        birthDay
+      ).padStart(2, "0")}`,
+    };
+
+    console.log("Formatted dateOfBirth:", updatedSettings.dateOfBirth);
+
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        "http://localhost:8080/user/settings",
+        updatedSettings,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Response:", response.data);
+      alert("User settings updated successfully.");
+    } catch (error) {
+      console.error("Error updating settings:", error);
+      console.log("Error message:", error.message);
+      console.log("Error response:", error.response);
+      alert("Failed to update settings.");
+    }
   };
 
-  const handleEmailChange = () => {
-    console.log("Email change clicked");
-  };
-
-  const handleDeleteAccount = () => {
-    console.log("Delete account clicked");
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await axios.delete(
+        "http://localhost:8080/user/settings/delete",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data);
+      handleLogout();
+      alert("User account deleted successfully.");
+      // Optionally, log the user out or redirect to a different page
+    } catch (error) {
+      console.error("Error deleting account: ", error);
+      alert("Failed to delete account.");
+    }
   };
 
   return (
@@ -110,45 +171,16 @@ const Settings = () => {
                 <option value="Kazakhstan">Kazakhstan</option>
                 <option value="Russia">Russia</option>
                 <option value="USA">USA</option>
-                {/* Add other countries as needed */}
               </select>
             </div>
           </section>
-          <section className="mb-32">
-            <h2 className="text-main text-xl font-semibold mb-4">
-              Linked accounts
-            </h2>
-
-            <button
-              onClick={handleLinkAccount}
-              className="flex items-center font-normal bg-[#0B7C92] text-[#FFFFFF] justify-center w-1/2 p-2 mb-3 border  rounded-lg sm:w-1/3  hover:bg-[#368595]"
-            >
-              Link account
-            </button>
-          </section>
-
           <section className="mb-8">
-            <h2 className="text-main text-lg font-semibold mb-4">
-              Change password
-            </h2>
             <button
-              onClick={handlePasswordChange}
+              onClick={handleUpdateSettings}
               className="px-4 py-2 bg-[#0B7C92] text-white rounded-md w-full sm:w-5/12"
             >
-              We will send to your e-mail changing request
+              Save Settings
             </button>
-          </section>
-          <section className="mb-8">
-            <h2 className="text-main text-lg font-semibold mb-4">Email</h2>
-            <div className="flex gap-10 flex-wrap items-center">
-              <p className="text-gray-700">{email}</p>
-              <button
-                onClick={handleEmailChange}
-                className="px-12 py-2 bg-[#0B7C92] text-white rounded-md w-full sm:w-auto"
-              >
-                Tap to change
-              </button>
-            </div>
           </section>
           <section className="mb-8">
             <hr className="border-t border-[#162850] mb-4" />

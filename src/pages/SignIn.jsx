@@ -1,27 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import signup from "../assets/svg/signup.svg";
 import Header from "../components/Header";
 import axios from "../axios";
 import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "../hooks/UserContext";
+import useAuth from "../hooks/useAuth";
+import Footer from "../components/Footer";
 
 const SignIn = () => {
+  const { setAuth } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { username, isLoggedIn, setUsername, setIsLoggedIn } = useUser();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Redirect to profile if already logged in
-    if (isLoggedIn && username) {
-      navigate(`/profile/${username}`);
-    }
-  }, [isLoggedIn, username, navigate]);
-
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault(); // Prevent default form submission
+
     if (!email || !password) {
       setError("Both email and password are required.");
       return;
@@ -30,28 +26,54 @@ const SignIn = () => {
     // Clear previous error
     setError("");
 
-    // Send login data to the backend
-    axios
-      .post("/auth/login", { email, password })
-      .then((response) => {
-        const { username } = response.data; // Get username from backend response
-        setUsername(username); // Store username in global context
-        setIsLoggedIn(true); // Set login state to true
-        navigate(`/profile/${username}`); // Redirect to profile page
-      })
-      .catch((err) => {
+    try {
+      const response = await axios.post(
+        "/auth/login",
+        { email, password },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true, // Включаем передачу cookie для сессионной аутентификации
+        }
+      );
+
+      const { username, token } = response?.data;
+
+      localStorage.setItem("token", token);
+
+      if (username) {
+        // Обновляем контекст авторизации с данными пользователя
+        setAuth({ email, username });
+
+        // Clear the email and password fields
+        setEmail("");
+        setPassword("");
+
+        // Navigate to the user's profile using the username
+        console.log("Navigating to profile:", `/profile/${username}`);
+        navigate(`/profile/${username}`);
+      } else {
+        setError("Failed to retrieve user information. Please try again.");
+      }
+    } catch (err) {
+      if (!err?.response) {
+        setError("No Server Response");
+      } else if (err.response?.status === 400) {
+        setError("Missing Username or Password");
+      } else if (err.response?.status === 401) {
+        setError("Unauthorized - Invalid Email or Password");
+      } else {
         console.error("Error during login:", err.response || err.message);
         setError(
           err.response?.data?.message || "Failed to log in. Please try again."
         );
-      });
+      }
+    }
   };
 
   return (
     <div className="flex flex-col h-screen">
       <Header />
       <div className="flex w-full h-full">
-        {/* Left-side image, hidden on smaller screens */}
         <div className="hidden xl:flex h-full items-center bg-[#F6F7FF]">
           <img
             src={signup}
@@ -59,17 +81,14 @@ const SignIn = () => {
             className="max-w-full max-h-full"
           />
         </div>
-
-        {/* Centered login form, full-width on small screens */}
         <div className="flex flex-1 w-full justify-center items-center p-4 mb-32 ">
           <form
-            onSubmit={handleLogin} // Attach the handleLogin function
+            onSubmit={handleLogin}
             className="flex flex-col items-start p-6 rounded-lg text-[#1b0d13] w-full max-w-md"
           >
             <h2 className="text-2xl font-medium text-[#274B6D] mb-6 font-josefinSans self-center">
               Log in
             </h2>
-
             {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
@@ -82,7 +101,6 @@ const SignIn = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
-
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
               Password
             </label>
@@ -93,10 +111,9 @@ const SignIn = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
-
             <div className="flex flex-col w-full mt-4 items-center">
               <button
-                type="submit" // Ensure the button is a submit button
+                type="submit"
                 className={`bg-[#162850] font-josefinSans w-full text-base text-white px-6 py-2 rounded-lg font-normal ${
                   email && password ? "" : "opacity-80 cursor-not-allowed"
                 }`}
