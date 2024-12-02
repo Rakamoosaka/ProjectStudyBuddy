@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import signupImage from "../assets/svg/signup.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "../axios";
-import { useUser } from "../hooks/UserContext";
+import useAuth from "../hooks/useAuth";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -11,7 +11,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { setUsername, setIsLoggedIn } = useUser();
+  const { setAuth } = useAuth(); // Get setAuth from context
 
   const [email, setEmail] = useState("");
   const [username, setUser] = useState("");
@@ -20,6 +20,7 @@ const SignUp = () => {
   const [birthMonth, setBirthMonth] = useState("March");
   const [birthDay, setBirthDay] = useState(22);
   const [birthYear, setBirthYear] = useState(2002);
+  const [gender, setGender] = useState("male");
   const [errorMsg, setErrorMsg] = useState("");
 
   const userRef = useRef();
@@ -50,6 +51,7 @@ const SignUp = () => {
     }
 
     try {
+      // Convert birth month to number and format the date
       const monthNumber = new Date(`${birthMonth} 1`).getMonth() + 1;
       const formattedDate = `${birthYear}-${monthNumber
         .toString()
@@ -59,19 +61,27 @@ const SignUp = () => {
         email,
         username,
         password,
-        birthDate: formattedDate,
+        dateOfBirth: formattedDate,
+        gender,
       };
 
+      // Make API request to register user
       const response = await axios.post("/auth/register", userData);
       console.log("User registered successfully:", response.data);
 
-      setUsername(username); // Set username in context
-      setIsLoggedIn(true); // Mark user as logged in
-      navigate(`/profile/${username}`); // Redirect to profile page
+      // Use setAuth to store username and token in the context
+      setAuth({
+        username,
+        token: response.data.token, // assuming the server responds with a token
+      });
+
+      // Redirect to profile page after successful registration
+      navigate(`/profile/${username}`);
     } catch (error) {
       console.error("Registration failed:", error.response || error.message);
       setErrorMsg(
-        error.response?.data || "Registration failed. Please try again."
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
       );
     }
   };
@@ -170,6 +180,22 @@ const SignUp = () => {
                 ))}
               </select>
             </div>
+
+            {/* Gender */}
+            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
+              Gender
+            </label>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              className="w-full p-2 mb-6 text-base border text-[#162850] border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+            >
+              {["male", "female"].map((genderOption) => (
+                <option key={genderOption} value={genderOption}>
+                  {genderOption}
+                </option>
+              ))}
+            </select>
 
             {/* Username */}
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">

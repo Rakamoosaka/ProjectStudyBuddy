@@ -1,6 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 export default function Footer() {
+  const { username } = useAuth();
+
+  const navigate = useNavigate();
+
+  const handleGoToProfile = () => {
+    if (username) {
+      navigate(`/profile/${username}`);
+    } else {
+      console.error("Username not found");
+    }
+  };
   return (
     <footer className="bg-[#526F8A] text-white py-10 px-8">
       <div className="max-w-screen-lg mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
@@ -20,9 +33,12 @@ export default function Footer() {
           <a href="searchpage" className="hover:text-gray-300">
             Search for buddy
           </a>
-          <a href="profile" className="hover:text-gray-300">
+          <button
+            onClick={handleGoToProfile}
+            className="hover:text-gray-300 cursor-pointer bg-transparent border-none p-0 text-inherit"
+          >
             Profile
-          </a>
+          </button>
           <a href="chatpage" className="hover:text-gray-300">
             Chats
           </a>
