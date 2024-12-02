@@ -16,6 +16,11 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState("Buddies");
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false); // Popup state
   const token = localStorage.getItem("token");
+  const [isExpanded, setIsExpanded] = useState(false); // State to manage expanded view
+
+  const toggleExpanded = () => {
+    setIsExpanded((prevState) => !prevState);
+  };
 
   useEffect(() => {
     // Fetch user profile data from the backend
@@ -40,26 +45,25 @@ const Profile = () => {
       });
   }, []);
 
-  const handleProfileUpdate = () => {
-    // Refresh user profile data after update
-    axios
-      .get("http://localhost:8080/user/profile/details", {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setUserData(response.data);
-        setIsEditPopupOpen(false); // Close popup
-        alert("Profile updated successfully!");
-      })
-      .catch((error) => {
-        console.error(
-          "Error updating profile:",
-          error.response || error.message
-        );
-      });
+  const handleProfileUpdate = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/user/profile/details",
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setUserData(response.data); // Update user data
+      setIsEditPopupOpen(false); // Close popup
+
+      // Single success notification
+      alert("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error.response || error.message);
+    }
   };
 
   const renderTab = () => {
@@ -104,7 +108,24 @@ const Profile = () => {
               : "Unknown"}
           </p>
           <p className="text-sm">
-            About me: {userData?.about || "No details provided."}
+            About me:{" "}
+            {userData?.about ? (
+              <>
+                {isExpanded
+                  ? userData.about
+                  : `${userData.about.slice(0, 30)}... `}
+                {userData.about.length > 30 && (
+                  <span
+                    onClick={toggleExpanded}
+                    className="text-white cursor-pointer hover:underline"
+                  >
+                    [{isExpanded ? "less" : "more"}]
+                  </span>
+                )}
+              </>
+            ) : (
+              "No details provided."
+            )}
           </p>
         </div>
         <button
@@ -126,7 +147,7 @@ const Profile = () => {
       {/* Navigation Section */}
       <div className="flex justify-center my-4">
         <img src={tabsSVG} className="absolute" alt="tabs" />
-        {["Academic", "Buddies", "Projects"].map((tab) => (
+        {["Academic", "Buddies"].map((tab) => (
           <div
             key={tab}
             className={`relative mx-6 pt-2 mt-2 text-xl md:text-2xl cursor-pointer text-[#162850] ${

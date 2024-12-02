@@ -13,7 +13,6 @@ const DropdownWithBlob = () => {
   const handleLogout = useLogout();
 
   const username = localStorage.getItem("username");
-  console.log(username);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };

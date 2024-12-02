@@ -8,6 +8,7 @@ import Settings from "./pages/Settings";
 import ErrorPage from "./pages/ErrorPage";
 import { AuthProvider } from "./hooks/AuthProvider";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import ProfilePage from "./pages/ProfilePage";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const App = () => {
     {
       path: "/about-us",
       element: <AboutUs />,
+    },
+    {
+      path: "/profilepage/:userId",
+      element: <ProfilePage />,
     },
     {
       element: <ProtectedRoute />, // Protect these routes

@@ -5,9 +5,13 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
   const [about, setAbout] = useState(userDetails?.about || "");
   const [languages, setLanguages] = useState([]);
   const [newLanguage, setNewLanguage] = useState("");
+  const [removedLanguages, setRemovedLanguages] = useState([]);
+  const [addedLanguages, setAddedLanguages] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const token = localStorage.getItem("token");
 
+  // Initialize known languages when `userDetails` changes
   useEffect(() => {
     if (userDetails?.languages) {
       setLanguages(
@@ -19,9 +23,41 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
     }
   }, [userDetails]);
 
+  const handleAddLanguage = () => {
+    if (
+      newLanguage &&
+      !languages.some(
+        (lang) => lang.languageName.toLowerCase() === newLanguage.toLowerCase()
+      )
+    ) {
+      const newLang = { id: Date.now(), languageName: newLanguage };
+      setLanguages([...languages, newLang]);
+      setAddedLanguages([...addedLanguages, newLang]);
+      setNewLanguage(""); // Clear the input field
+    } else {
+      alert("Language already exists or input is empty!");
+    }
+  };
+
+  const handleRemoveLanguage = (languageName) => {
+    const removedLang = languages.find(
+      (lang) => lang.languageName === languageName
+    );
+    if (removedLang) {
+      setRemovedLanguages([...removedLanguages, removedLang]);
+    }
+    setLanguages((prevLanguages) =>
+      prevLanguages.filter((lang) => lang.languageName !== languageName)
+    );
+    setAddedLanguages((prevAdded) =>
+      prevAdded.filter((lang) => lang.languageName !== languageName)
+    );
+  };
+
   const handleSaveChanges = async () => {
+    setIsProcessing(true);
     try {
-      // Update About Me
+      // Update "About Me"
       if (about !== userDetails?.about) {
         await axios.put(
           "http://localhost:8080/user/profile/about/edit",
@@ -34,57 +70,44 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
         );
       }
 
-      // Add New Language
-      if (newLanguage) {
+      // Add new languages to the backend
+      for (const language of addedLanguages) {
         await axios.post(
           "http://localhost:8080/user/profile/language/add",
-          { languageName: newLanguage },
+          { languageName: language.languageName },
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        setLanguages([
-          ...languages,
-          { id: Date.now(), languageName: newLanguage },
-        ]);
-        setNewLanguage(""); // Clear input
       }
 
-      // Refresh profile data from parent
+      // Remove deleted languages from the backend
+      for (const language of removedLanguages) {
+        await axios.delete(
+          "http://localhost:8080/user/profile/language/delete",
+          {
+            data: { languageName: language.languageName },
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // Notify parent to refresh profile data
       await onUpdate();
 
-      // Notify success and close the popup
-      alert("Profile updated successfully!");
+      // Reset state
+      setAddedLanguages([]);
+      setRemovedLanguages([]);
       onClose();
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Failed to update profile. Please try again.");
-    }
-  };
-
-  const handleRemoveLanguage = async (languageName) => {
-    try {
-      await axios.delete("http://localhost:8080/user/profile/language/delete", {
-        data: { languageName },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // Remove the language from the state
-      setLanguages((prevLanguages) =>
-        prevLanguages.filter((lang) => lang.languageName !== languageName)
-      );
-
-      // Refresh profile data from parent
-      await onUpdate();
-
-      alert(`Language "${languageName}" removed successfully.`);
-    } catch (error) {
-      console.error("Error removing language:", error);
-      alert("Failed to remove language. Please try again.");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -120,6 +143,7 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
                 {language.languageName}
                 <button
                   onClick={() => handleRemoveLanguage(language.languageName)}
+                  disabled={isProcessing}
                   className="text-red-500 text-sm hover:underline"
                 >
                   Remove
@@ -136,18 +160,8 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
               placeholder="Add new language"
             />
             <button
-              onClick={() => {
-                if (
-                  newLanguage &&
-                  !languages.some((lang) => lang.languageName === newLanguage)
-                ) {
-                  setLanguages([
-                    ...languages,
-                    { id: Date.now(), languageName: newLanguage },
-                  ]);
-                  setNewLanguage(""); // Clear input field
-                }
-              }}
+              onClick={handleAddLanguage}
+              disabled={isProcessing}
               className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600"
             >
               Add
@@ -160,12 +174,14 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
           <button
             onClick={onClose}
             className="bg-gray-300 text-gray-800 px-3 py-1 rounded-lg hover:bg-gray-400"
+            disabled={isProcessing}
           >
             Cancel
           </button>
           <button
             onClick={handleSaveChanges}
             className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600"
+            disabled={isProcessing}
           >
             Save Changes
           </button>
