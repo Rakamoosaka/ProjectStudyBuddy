@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "../axios";
 import useAuth from "../hooks/useAuth";
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const USER_REGEX = /^[A-Za-z ]{4,24}$/;
+const PWD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!_])(?=.{8,24}$).*$/;
+const EMAIL_REGEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -24,12 +25,21 @@ const SignUp = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const userRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
 
   // Validation States
   const [validEmail, setValidEmail] = useState(false);
   const [validUsername, setValidUsername] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
   const [validMatch, setValidMatch] = useState(false);
+
+  // Validation Feedback States
+  const [emailFocus, setEmailFocus] = useState(false);
+  const [usernameFocus, setUsernameFocus] = useState(false);
+  const [passwordFocus, setPasswordFocus] = useState(false);
+  const [confirmPasswordFocus, setConfirmPasswordFocus] = useState(false);
 
   // Focus on username input on load
   useEffect(() => {
@@ -51,7 +61,6 @@ const SignUp = () => {
     }
 
     try {
-      // Convert birth month to number and format the date
       const monthNumber = new Date(`${birthMonth} 1`).getMonth() + 1;
       const formattedDate = `${birthYear}-${monthNumber
         .toString()
@@ -65,17 +74,14 @@ const SignUp = () => {
         gender,
       };
 
-      // Make API request to register user
       const response = await axios.post("/auth/register", userData);
       console.log("User registered successfully:", response.data);
 
-      // Use setAuth to store username and token in the context
       setAuth({
         username,
-        token: response.data.token, // assuming the server responds with a token
+        token: response.data.token,
       });
 
-      // Redirect to profile page after successful registration
       navigate(`/signin`);
     } catch (error) {
       console.error("Registration failed:", error.response || error.message);
@@ -94,7 +100,6 @@ const SignUp = () => {
     <div className="flex flex-col h-screen">
       <Header />
       <div className="flex w-full h-full">
-        {/* Left-side illustration */}
         <div className="hidden xl:flex h-full items-center bg-[#F6F7FF]">
           <img
             src={signupImage}
@@ -103,7 +108,6 @@ const SignUp = () => {
           />
         </div>
 
-        {/* Form Section */}
         <div className="flex flex-1 w-full justify-center items-center p-4">
           <div className="flex flex-col items-start p-6 rounded-lg text-[#1b0d13] w-full max-w-md">
             <h2 className="text-2xl font-medium text-[#274B6D] mb-6 font-josefinSans self-center">
@@ -111,93 +115,32 @@ const SignUp = () => {
             </h2>
 
             {errorMsg && (
-              <p className="text-red-500 text-sm mb-4" aria-live="assertive">
+              <p className="text-[#b00000] text-sm mb-4" aria-live="assertive">
                 {errorMsg}
               </p>
             )}
 
-            {/* Email */}
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
               Your email
             </label>
             <input
+              ref={emailRef}
               type="email"
               placeholder="example@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 mb-6 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+              onFocus={() => setEmailFocus(true)}
+              onBlur={() => setEmailFocus(false)}
+              className="w-full p-2 mb-1 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
-
-            {/* Birthdate */}
-            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
-              Your birthdate
-            </label>
-            <div className="flex justify-between w-full mb-6 text-[#162850] font-light">
-              <select
-                value={birthMonth}
-                onChange={(e) => setBirthMonth(e.target.value)}
-                className="w-6/12 p-2 text-lg rounded-lg border font-josefinSans border-[#162850] focus:outline-none bg-[#F6F7FF]"
-              >
-                {[
-                  "January",
-                  "February",
-                  "March",
-                  "April",
-                  "May",
-                  "June",
-                  "July",
-                  "August",
-                  "September",
-                  "October",
-                  "November",
-                  "December",
-                ].map((month) => (
-                  <option key={month} value={month}>
-                    {month}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={birthDay}
-                onChange={(e) => setBirthDay(e.target.value)}
-                className="w-2/12 p-2 text-lg rounded-lg border font-kantumruyPro border-[#162850] focus:outline-none bg-[#F6F7FF]"
-              >
-                {[...Array(31).keys()].map((day) => (
-                  <option key={day + 1} value={day + 1}>
-                    {day + 1}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={birthYear}
-                onChange={(e) => setBirthYear(e.target.value)}
-                className="w-3/12 p-2 text-lg rounded-lg border font-kantumruyPro border-[#162850] focus:outline-none bg-[#F6F7FF]"
-              >
-                {[...Array(100).keys()].map((year) => (
-                  <option key={year + 1925} value={year + 1925}>
-                    {year + 1925}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Gender */}
-            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
-              Gender
-            </label>
-            <select
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              className="w-full p-2 mb-6 text-base border text-[#162850] border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+            <p
+              className={`text-xs mt-1 ${
+                emailFocus && !validEmail ? "text-[#b00000]" : "hidden"
+              }`}
             >
-              {["male", "female"].map((genderOption) => (
-                <option key={genderOption} value={genderOption}>
-                  {genderOption}
-                </option>
-              ))}
-            </select>
+              Must be a valid email address.
+            </p>
 
-            {/* Username */}
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
               Name
             </label>
@@ -207,34 +150,64 @@ const SignUp = () => {
               placeholder="Omar Abdulrahman"
               value={username}
               onChange={(e) => setUser(e.target.value)}
-              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+              onFocus={() => setUsernameFocus(true)}
+              onBlur={() => setUsernameFocus(false)}
+              className="w-full p-2 mb-1 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
+            <p
+              className={`text-xs mt-1 ${
+                usernameFocus && !validUsername ? "text-[#b00000]" : "hidden"
+              }`}
+            >
+              Username can only contain uppercase and lowercase letters, and be
+              4-24 characters long.
+            </p>
 
-            {/* Password */}
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
               Create a password
             </label>
             <input
+              ref={passwordRef}
               type="password"
               placeholder="********"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+              onFocus={() => setPasswordFocus(true)}
+              onBlur={() => setPasswordFocus(false)}
+              className="w-full p-2 mb-1 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
+            <p
+              className={`text-xs mt-1 ${
+                passwordFocus && !validPassword ? "text-[#b00000]" : "hidden"
+              }`}
+            >
+              Must be 8-24 characters, with uppercase, lowercase, number, and a
+              special character.
+            </p>
 
-            {/* Confirm Password */}
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
               Confirm password
             </label>
             <input
+              ref={confirmPasswordRef}
               type="password"
               placeholder="********"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+              onFocus={() => setConfirmPasswordFocus(true)}
+              onBlur={() => setConfirmPasswordFocus(false)}
+              className="w-full p-2 mb-1 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
+            <p
+              className={`text-xs mt-1 ${
+                confirmPasswordFocus && !validMatch
+                  ? "text-[#b00000]"
+                  : "hidden"
+              }`}
+            >
+              Must match the password above.
+            </p>
 
-            {/* Buttons */}
             <div className="flex justify-between w-full mt-6">
               <button
                 onClick={handleGoBack}
