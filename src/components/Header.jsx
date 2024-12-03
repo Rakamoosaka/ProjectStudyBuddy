@@ -1,5 +1,5 @@
 import React from "react";
-import LogoImage from "../assets/logo.png";
+import LogoImage from "../assets/Logo.png";
 import { Link } from "react-router-dom";
 
 const Header = () => {
