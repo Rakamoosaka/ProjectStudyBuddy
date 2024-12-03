@@ -76,7 +76,7 @@ const SignUp = () => {
       });
 
       // Redirect to profile page after successful registration
-      navigate(`/profile/${username}`);
+      navigate(`/signin`);
     } catch (error) {
       console.error("Registration failed:", error.response || error.message);
       setErrorMsg(

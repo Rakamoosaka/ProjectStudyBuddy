@@ -18,7 +18,7 @@ const MyFriends = () => {
         },
       })
       .then((response) => {
-        console.log("Response data:", response.data);
+        console.log("Friends:", response.data);
         setFriends(response.data);
       })
       .catch((error) => console.error("Error fetching friends:", error));

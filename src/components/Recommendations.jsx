@@ -6,8 +6,24 @@ const Recommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchInput, setSearchInput] = useState(""); // State for search input
   const token = localStorage.getItem("token");
   const navigate = useNavigate(); // Initialize navigation
+  const [friends, setFriends] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/user/friends/show", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Add Authorization header
+        },
+      })
+      .then((response) => {
+        const friendNames = response.data.map((friend) => friend.username);
+        setFriends(friendNames); // Update state with friend names
+      })
+      .catch((error) => console.error("Error fetching friends:", error));
+  }, [token]);
 
   useEffect(() => {
     const fetchRecommendations = async () => {
@@ -21,7 +37,6 @@ const Recommendations = () => {
             },
           }
         );
-        console.log("Recommendations:", response.data);
         setRecommendations(response.data);
         setLoading(false);
       } catch (err) {
@@ -38,6 +53,23 @@ const Recommendations = () => {
     navigate(`/profilepage/${buddiesId}`); // Navigate to the recommended user's profile page
   };
 
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      const foundUser = recommendations.find(
+        (rec) => rec.buddiesName.toLowerCase() === searchInput.toLowerCase()
+      );
+      if (foundUser) {
+        handleNavigateToProfile(foundUser.buddiesId);
+      } else {
+        alert("User not found in recommendations.");
+      }
+    }
+  };
+
+  const filteredRecommendations = recommendations.filter(
+    (rec) => !friends.includes(rec.buddiesName)
+  );
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -52,27 +84,27 @@ const Recommendations = () => {
         <h2 className="text-xl font-bold">Recommendations</h2>
         <input
           type="text"
-          placeholder="#_ Find friends by code"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)} // Update search input state
+          onKeyDown={handleSearch} // Trigger search on Enter key press
+          placeholder="# Find friends by name"
           className="p-2 text-base border border-black rounded-md text-black placeholder-black bg-transparent focus:outline-none focus:border-blue-500"
         />
       </div>
       <div className="flex flex-wrap gap-4">
-        {recommendations.map((rec) => (
+        {filteredRecommendations.slice(0, 3).map((rec) => (
           <div
-            key={rec.BuddiesId}
+            key={rec.buddiesName}
             className="flex flex-col items-center bg-white shadow rounded-lg p-3"
             style={{ flex: "1 1 calc(33.333% - 1rem)" }}
-            onClick={() => handleNavigateToProfile(rec.BuddiesId)} // Navigate on click
+            onClick={() => handleNavigateToProfile(rec.buddiesId)} // Navigate on click
           >
-            <h3 className="text-sm font-medium">{rec.BuddiesId}</h3>
+            <h3 className="text-sm font-medium">{rec.buddiesName}</h3>
             <p className="text-xs text-gray-600 text-center">
-              Subjects you can help: {rec.MyHelpToBuddieSubjects || "N/A"}
+              You are good at: {rec.myHelpToBuddieSubjects || "N/A"}
             </p>
             <p className="text-xs text-gray-600 text-center">
-              Subjects they can help you: {rec.BuddieHelpToMeSubjects || "N/A"}
-            </p>
-            <p className="text-xs text-gray-600 text-center">
-              Match Score: {rec.totalScore || "N/A"}
+              He/She could help with: {rec.buddieHelpToMeSubjects || "N/A"}
             </p>
           </div>
         ))}

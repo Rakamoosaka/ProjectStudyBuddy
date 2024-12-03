@@ -1,28 +1,51 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const RequestsFromMe = () => {
   const [requests, setRequests] = useState([]);
-  const token = localStorage.getItem("token"); // Get token from localStorage
-  const navigate = useNavigate(); // Initialize useNavigate
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
       .get("http://localhost:8080/user/friends/requests/from-me", {
         headers: {
-          Authorization: `Bearer ${token}`, // Add Authorization header
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
         console.log("Requests data:", response.data);
-        setRequests(response.data); // Update state with requests
+        setRequests(response.data);
       })
       .catch((error) => console.error("Error fetching requests:", error));
-  }, []);
+  }, [token]);
 
   const handleNavigateToProfile = (userId) => {
-    navigate(`/profilepage/${userId}`); // Navigate to the user's profile page
+    navigate(`/profilepage/${userId}`);
+  };
+
+  const handleDeleteRequest = (requestId) => {
+    axios
+      .delete(
+        `http://localhost:8080/user/friends/requests/${requestId}/delete`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then(() => {
+        // Remove the deleted request from the state
+        setRequests((prevRequests) =>
+          prevRequests.filter((request) => request.requestId !== requestId)
+        );
+        alert("Friend request deleted successfully.");
+      })
+      .catch((error) => {
+        console.error("Error deleting friend request:", error);
+        alert("Failed to delete friend request.");
+      });
   };
 
   return (
@@ -37,7 +60,7 @@ const RequestsFromMe = () => {
             >
               <div
                 className="flex items-center gap-4 cursor-pointer"
-                onClick={() => handleNavigateToProfile(request.receiverId)} // Navigate to the profile
+                onClick={() => handleNavigateToProfile(request.receiverId)}
               >
                 <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
                 <div>
@@ -49,6 +72,12 @@ const RequestsFromMe = () => {
                   </span>
                 </div>
               </div>
+              <button
+                onClick={() => handleDeleteRequest(request.requestId)}
+                className="text-sm text-red-400 hover:underline"
+              >
+                Delete
+              </button>
             </div>
           ))
         ) : (

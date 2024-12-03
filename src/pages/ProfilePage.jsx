@@ -12,6 +12,7 @@ const ProfilePage = () => {
   const [disciplines, setDisciplines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isFriend, setIsFriend] = useState(false); // Track if the person is a friend
   const [requestSent, setRequestSent] = useState(false); // Track if the request was sent
   const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
@@ -33,6 +34,26 @@ const ProfilePage = () => {
 
         setProfileData(profileResponse.data);
         setDisciplines(disciplinesResponse.data);
+
+        // Check if the person is a friend or if a request was already sent
+        const [friendsResponse, requestsResponse] = await Promise.all([
+          axios.get("/user/friends/show", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+          axios.get("/user/friends/requests/from-me", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+        ]);
+
+        const friends = friendsResponse.data.map((friend) => friend.id);
+        const requests = requestsResponse.data.map((req) => req.receiverId);
+
+        setIsFriend(friends.includes(Number(userId))); // Check if user is in friends list
+        setRequestSent(requests.includes(Number(userId))); // Check if request is already sent
         setLoading(false);
       } catch (err) {
         console.error("Error fetching profile data:", err);
@@ -120,15 +141,15 @@ const ProfilePage = () => {
           <button className="bg-[#C2DAE1] text-[#274B6D] px-4 py-2 cursor-pointer font-semibold rounded-lg">
             Send a message
           </button>
-          <button
-            onClick={handleSendRequest}
-            disabled={requestSent} // Disable button if request was already sent
-            className={`${
-              requestSent ? "bg-gray-400 cursor-not-allowed" : "bg-[#C2DAE1]"
-            } text-[#274B6D] px-4 py-2 cursor-pointer font-semibold rounded-lg`}
-          >
-            {requestSent ? "Request Sent" : "Send a request"}
-          </button>
+          {!isFriend &&
+            !requestSent && ( // Show the button only if not a friend and request not sent
+              <button
+                onClick={handleSendRequest}
+                className="bg-[#C2DAE1] text-[#274B6D] px-4 py-2 cursor-pointer font-semibold rounded-lg"
+              >
+                Send a request
+              </button>
+            )}
         </div>
       </div>
 
