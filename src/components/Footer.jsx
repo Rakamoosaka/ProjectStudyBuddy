@@ -3,17 +3,19 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 export default function Footer() {
-  const { username } = useAuth();
-
   const navigate = useNavigate();
 
   const handleGoToProfile = () => {
-    if (username) {
+    const token = localStorage.getItem("token"); // Check for token in localStorage
+    const username = localStorage.getItem("username");
+
+    if (token && username) {
       navigate(`/profile/${username}`);
     } else {
-      console.error("Username not found");
+      navigate(`/signin`); // Redirect to login page if no token is found
     }
   };
+
   return (
     <footer className="bg-[#526F8A] text-white py-10 px-8">
       <div className="max-w-screen-lg mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">

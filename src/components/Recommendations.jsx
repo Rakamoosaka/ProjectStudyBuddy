@@ -119,7 +119,7 @@ const Recommendations = () => {
           />
           <button
             onClick={handleSearch}
-            className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+            className="ml-2 px-4 py-2 bg-[#C2DAE1] text-[#274B6D] hover:bg-[#cae3ea] mt-auto rounded-lg"
           >
             Search
           </button>

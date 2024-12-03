@@ -7,26 +7,24 @@ import axios from "../axios";
 import useAuth from "../hooks/useAuth";
 import Footer from "../components/Footer";
 import tabsSVG from "../assets/svg/tabsSVG.svg";
-import EditProfilePopup from "../components/EditProfilePopup"; // Import the popup component
+import EditProfilePopup from "../components/EditProfilePopup";
 
 const Profile = () => {
-  // Get user information from auth context
   const { auth } = useAuth();
   const [userData, setUserData] = useState(null);
   const [activeTab, setActiveTab] = useState("Buddies");
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false); // Popup state
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const token = localStorage.getItem("token");
-  const [isExpanded, setIsExpanded] = useState(false); // State to manage expanded view
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpanded = () => {
     setIsExpanded((prevState) => !prevState);
   };
 
   useEffect(() => {
-    // Fetch user profile data from the backend
+    // Fetch user profile data
     axios
       .get("http://localhost:8080/user/profile/details", {
-        withCredentials: true,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -34,8 +32,6 @@ const Profile = () => {
       .then((response) => {
         setUserData(response.data);
         console.log("User Data:", response.data);
-        localStorage.setItem("username", response?.data?.username);
-        localStorage.setItem("details", JSON.stringify(response?.data));
       })
       .catch((error) => {
         console.error(
@@ -50,19 +46,43 @@ const Profile = () => {
       const response = await axios.get(
         "http://localhost:8080/user/profile/details",
         {
-          withCredentials: true,
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setUserData(response.data); // Update user data
-      setIsEditPopupOpen(false); // Close popup
-
-      // Single success notification
+      setUserData(response.data);
+      setIsEditPopupOpen(false);
       alert("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error.response || error.message);
+    }
+  };
+
+  const handleAvatarUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post(
+        "/user/profile/avatar/upload",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Avatar upload response:", response.data);
+      handleProfileUpdate(); // Refresh the profile after uploading
+      alert("Avatar updated successfully!");
+    } catch (error) {
+      console.error("Error uploading avatar:", error.response || error.message);
+      alert("Failed to upload avatar. Please try again.");
     }
   };
 
@@ -89,16 +109,26 @@ const Profile = () => {
 
   return (
     <div className="bg-[#f6f7ff] font-josefinSans min-h-screen flex flex-col gap-6">
-      {/* Header Section */}
       <HeaderWithDropdown />
 
       {/* Profile Section */}
       <div className="bg-[#274B6D] mx-auto text-white w-10/12 p-6 rounded-lg flex flex-col justify-center gap-7 items-center md:flex-row">
-        <img
-          src={userData.profilePicture || "https://via.placeholder.com/150"}
-          alt={`${userData?.username}'s profile`}
-          className="rounded-full w-32 h-32"
-        />
+        <div className="relative">
+          <label htmlFor="avatar-upload" className="cursor-pointer">
+            <img
+              src={userData.avatarUrl || "https://via.placeholder.com/150"}
+              alt={`${userData?.username}'s profile`}
+              className="rounded-full w-32 h-32"
+            />
+          </label>
+          <input
+            id="avatar-upload"
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarUpload}
+            style={{ display: "none" }}
+          />
+        </div>
         <div className="flex flex-col gap-2">
           <h2 className="text-xl font-normal">{userData?.username}</h2>
           <p className="text-sm">
@@ -144,7 +174,6 @@ const Profile = () => {
         onUpdate={handleProfileUpdate}
       />
 
-      {/* Navigation Section */}
       <div className="flex justify-center my-4">
         <img src={tabsSVG} className="absolute" alt="tabs" />
         {["Academic", "Buddies"].map((tab) => (
@@ -163,7 +192,6 @@ const Profile = () => {
         ))}
       </div>
 
-      {/* Dynamic Content Section */}
       <div className="flex-grow">{renderTab()}</div>
       <Footer />
     </div>
