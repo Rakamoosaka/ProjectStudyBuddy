@@ -67,18 +67,13 @@ const ProfilePage = () => {
 
   const handleSendRequest = async () => {
     try {
-      const token = localStorage.getItem("token");
-      console.log("Token being sent:", token); // Log the token
-      console.log("Username being sent:", profileData.username);
-      await axios.post(
-        "/user/friends/send-request",
-        { username: profileData.username }, // Use the username from the profile data
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Ensure the token is included
-          },
-        }
-      );
+      const payload = { username: profileData.username }; // Construct payload
+      console.log("Payload:", payload); // Log the payload
+      const response = await axios.post("/user/friends/send-request", payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setRequestSent(true); // Update state to indicate the request was sent
       alert("Friend request sent successfully!");
     } catch (err) {

@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
-import aboutUsImage from "../assets/ben-omar.png"; // Add an appropriate image to your assets folder
+import HeaderWithDropdown from "../components/HeaderWithDropdown";
+import aboutUsImage from "../assets/ben-omar.png";
 import omarWhite from "../assets/omar-whitest-form.png";
 import aitoreTheWizard from "../assets/aitore-wizard.png";
+import Footer from "../components/Footer";
 
 const AboutUs = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check for the token in localStorage
+    const token = localStorage.getItem("token");
+    console.log(token);
+    if (token) {
+      setLoggedIn(true);
+    }
+  }, []);
+
   return (
     <div className="bg-[#f6f7ff] font-josefinSans min-h-screen">
-      {/* Header */}
-      <Header />
+      {/* Conditionally Render Header */}
+      {loggedIn ? <HeaderWithDropdown /> : <Header />}
 
       {/* Main Content */}
       <div className="w-11/12 mx-auto mt-10 text-[#162850]">
@@ -78,11 +91,10 @@ const AboutUs = () => {
             succeed in your academic journey.
           </p>
           <div className="flex flex-wrap justify-center gap-6">
-            {/* Add team members dynamically or statically */}
             <div className="flex flex-col items-center">
               <img
                 src={aitoreTheWizard}
-                alt=""
+                alt="Aitore"
                 className="w-24 h-24 rounded-full object-cover"
               />
               <p className="font-semibold">Aitore</p>
@@ -91,31 +103,33 @@ const AboutUs = () => {
             <div className="flex flex-col items-center">
               <img
                 src={omarWhite}
-                alt=""
+                alt="Omar"
                 className="w-24 h-24 rounded-full object-cover"
               />
-
               <p className="font-semibold">Omar</p>
-              <p className="text-sm text-gray-500">backend dev and design</p>
+              <p className="text-sm text-gray-500">Backend Dev and Designer</p>
             </div>
           </div>
         </div>
 
         {/* Call-to-Action */}
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-4">Join Us Today!</h2>
-          <p className="mb-6">
-            Ready to take your learning experience to the next level? Join Study
-            Buddy and connect with a world of knowledge.
-          </p>
-          <button
-            onClick={() => (window.location.href = "/signup")}
-            className="px-8 py-3 bg-[#162850] text-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
-          >
-            Sign Up Now
-          </button>
-        </div>
+        {!loggedIn && (
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold mb-4">Join Us Today!</h2>
+            <p className="mb-6">
+              Ready to take your learning experience to the next level? Join
+              Study Buddy and connect with a world of knowledge.
+            </p>
+            <button
+              onClick={() => (window.location.href = "/signup")}
+              className="px-8 py-3 bg-[#162850] text-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+            >
+              Sign Up Now
+            </button>
+          </div>
+        )}
       </div>
+      <Footer />
     </div>
   );
 };

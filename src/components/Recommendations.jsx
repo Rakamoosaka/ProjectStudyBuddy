@@ -6,12 +6,14 @@ const Recommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchInput, setSearchInput] = useState(""); // State for search input
   const token = localStorage.getItem("token");
   const navigate = useNavigate(); // Initialize navigation
   const [friends, setFriends] = useState([]);
+  const [allUsernames, setAllUsernames] = useState([]); // Store all usernames
+  const [searchInput, setSearchInput] = useState(""); // Store search input
 
   useEffect(() => {
+    // Fetch friends
     axios
       .get("http://localhost:8080/user/friends/show", {
         headers: {
@@ -19,13 +21,15 @@ const Recommendations = () => {
         },
       })
       .then((response) => {
-        const friendNames = response.data.map((friend) => friend.username);
-        setFriends(friendNames); // Update state with friend names
+        const friendIds = response.data.map((friend) => friend.id);
+        const friendNames = response.data.map((friend) => friend.username); // Extract IDs
+        setFriends(friendNames); // Update state with friend IDs
       })
       .catch((error) => console.error("Error fetching friends:", error));
   }, [token]);
 
   useEffect(() => {
+    // Fetch recommendations
     const fetchRecommendations = async () => {
       setLoading(true);
       try {
@@ -49,23 +53,46 @@ const Recommendations = () => {
     fetchRecommendations();
   }, [token]);
 
-  const handleNavigateToProfile = (buddiesId) => {
-    navigate(`/profilepage/${buddiesId}`); // Navigate to the recommended user's profile page
+  useEffect(() => {
+    // Fetch all usernames
+    const fetchUsernames = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/user/profile/all-usernames",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setAllUsernames(response.data); // Update state with all usernames
+      } catch (err) {
+        console.error("Error fetching usernames:", err);
+        setError("Failed to load usernames.");
+      }
+    };
+
+    fetchUsernames();
+  }, [token]);
+
+  const handleNavigateToProfile = (userId) => {
+    navigate(`/profilepage/${userId}`); // Navigate to the user's profile page
   };
 
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      const foundUser = recommendations.find(
-        (rec) => rec.buddiesName.toLowerCase() === searchInput.toLowerCase()
-      );
-      if (foundUser) {
-        handleNavigateToProfile(foundUser.buddiesId);
-      } else {
-        alert("User not found in recommendations.");
-      }
+  const handleSearch = () => {
+    // Find user ID by username
+    const user = allUsernames.find(
+      (usernameObj) =>
+        usernameObj.username.toLowerCase() === searchInput.toLowerCase()
+    );
+    if (user) {
+      handleNavigateToProfile(user.id);
+    } else {
+      alert("User not found!");
     }
   };
 
+  // Filter recommendations to exclude friends
   const filteredRecommendations = recommendations.filter(
     (rec) => !friends.includes(rec.buddiesName)
   );
@@ -82,14 +109,21 @@ const Recommendations = () => {
     <div>
       <div className="flex flex-wrap justify-between mb-4">
         <h2 className="text-xl font-bold">Recommendations</h2>
-        <input
-          type="text"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)} // Update search input state
-          onKeyDown={handleSearch} // Trigger search on Enter key press
-          placeholder="# Find friends by name"
-          className="p-2 text-base border border-black rounded-md text-black placeholder-black bg-transparent focus:outline-none focus:border-blue-500"
-        />
+        <div className="flex items-center">
+          <input
+            type="text"
+            placeholder="Find friends by name"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            className="p-2 text-base border border-black rounded-md text-black placeholder-black bg-transparent focus:outline-none focus:border-blue-500"
+          />
+          <button
+            onClick={handleSearch}
+            className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+          >
+            Search
+          </button>
+        </div>
       </div>
       <div className="flex flex-wrap gap-4">
         {filteredRecommendations.slice(0, 3).map((rec) => (
