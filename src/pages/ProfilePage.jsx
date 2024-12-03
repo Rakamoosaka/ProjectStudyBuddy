@@ -46,19 +46,25 @@ const ProfilePage = () => {
 
   const handleSendRequest = async () => {
     try {
+      const token = localStorage.getItem("token");
+      console.log("Token being sent:", token); // Log the token
+      console.log("Username being sent:", profileData.username);
       await axios.post(
         "/user/friends/send-request",
         { username: profileData.username }, // Use the username from the profile data
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // Ensure the token is included
           },
         }
       );
       setRequestSent(true); // Update state to indicate the request was sent
       alert("Friend request sent successfully!");
     } catch (err) {
-      console.error("Error sending friend request:", err);
+      console.error(
+        "Error sending friend request:",
+        err.response || err.message
+      );
       alert("Failed to send friend request. Please try again.");
     }
   };

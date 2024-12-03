@@ -32,6 +32,34 @@ const Settings = () => {
     December: "12",
   };
 
+  const countries = [
+    "Kazakhstan",
+    "Russia",
+    "Ukraine",
+    "Belarus",
+    "Poland",
+    "Germany",
+    "France",
+    "Italy",
+    "Spain",
+    "Portugal",
+    "Brazil",
+    "Argentina",
+    "Chile",
+    "Colombia",
+    "Mexico",
+    "Peru",
+    "Uruguay",
+    "Venezuela",
+    "Ecuador",
+    "Bolivia",
+    "Paraguay",
+    "Panama",
+    "Costa Rica",
+    "United States",
+    "Canada",
+  ];
+
   const handleUpdateSettings = async () => {
     const updatedSettings = {
       username: nickname,
@@ -113,18 +141,7 @@ const Settings = () => {
                 className="w-full font-light p-2 border bg-[#F6F7FF] border-gray-300 rounded-md"
               />
             </div>
-            <div className="mb-4">
-              <label className="block font-light mb-2  ">System language</label>
-              <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-                className="w-full p-2 border font-light bg-[#F6F7FF] border-gray-300 rounded-md"
-              >
-                <option value="English">English</option>
-                <option value="Russian">Russian</option>
-                <option value="Kazakh">Kazakh</option>
-              </select>
-            </div>
+
             <div className="mb-4">
               <label className="block font-light mb-2">Date of birth</label>
               <div className="flex space-x-2">
@@ -133,9 +150,24 @@ const Settings = () => {
                   onChange={(e) => setBirthMonth(e.target.value)}
                   className="p-2 border bg-[#F6F7FF] font-light border-gray-300 rounded-md w-1/3"
                 >
-                  <option value="January">January</option>
-                  <option value="February">February</option>
-                  <option value="March">March</option>
+                  {[
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                  ].map((month) => (
+                    <option key={month} value={month}>
+                      {month}
+                    </option>
+                  ))}
                 </select>
                 <select
                   value={birthDay}
@@ -168,9 +200,11 @@ const Settings = () => {
                 onChange={(e) => setCountry(e.target.value)}
                 className="w-full font-light bg-[#F6F7FF] p-2 border border-gray-300 rounded-md"
               >
-                <option value="Kazakhstan">Kazakhstan</option>
-                <option value="Russia">Russia</option>
-                <option value="USA">USA</option>
+                {countries.map((country) => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
               </select>
             </div>
           </section>

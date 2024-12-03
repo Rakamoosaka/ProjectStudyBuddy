@@ -136,7 +136,7 @@ const AcademicTab = ({ edit }) => {
                   <div className="flex justify-center gap-2 mt-1">
                     <button
                       onClick={() => handleEditDiscipline(item.subDisciplineId)}
-                      className="text-sm text-blue-500 hover:underline"
+                      className="text-sm text-[#162850] hover:underline"
                     >
                       Edit
                     </button>
@@ -144,7 +144,7 @@ const AcademicTab = ({ edit }) => {
                       onClick={() =>
                         handleDeleteDiscipline(item.subDisciplineId)
                       }
-                      className="text-sm text-red-500 hover:underline"
+                      className="text-sm text-[#b00000] hover:underline"
                     >
                       Delete
                     </button>
@@ -166,7 +166,7 @@ const AcademicTab = ({ edit }) => {
                   <div className="flex justify-center gap-2 mt-1">
                     <button
                       onClick={() => handleEditDiscipline(item.subDisciplineId)}
-                      className="text-sm text-blue-500 hover:underline"
+                      className="text-sm text-[#162850] hover:underline"
                     >
                       Edit
                     </button>
@@ -174,7 +174,7 @@ const AcademicTab = ({ edit }) => {
                       onClick={() =>
                         handleDeleteDiscipline(item.subDisciplineId)
                       }
-                      className="text-sm text-red-500 hover:underline"
+                      className="text-sm text-[#b00000] hover:underline"
                     >
                       Delete
                     </button>
@@ -190,7 +190,7 @@ const AcademicTab = ({ edit }) => {
       {edit && (
         <div className="w-8/12 flex flex-col items-center mt-12">
           <button
-            className="px-6 py-2 bg-[#CDF5FD] text-[#162850] rounded-lg hover:bg-[#89CFF3] focus:outline-none"
+            className="px-6 py-2 bg-[#C2DAE1] text-[#162850] rounded-lg hover:bg-[#cae3ea] focus:outline-none"
             onClick={() => setIsAddDisciplineOpen(!isAddDisciplineOpen)}
           >
             {isAddDisciplineOpen ? "Close" : "Add Discipline"}
@@ -220,7 +220,7 @@ const AcademicTab = ({ edit }) => {
               />
               <button
                 onClick={handleAddDiscipline}
-                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                className="px-4 py-2 bg-[#b7d4de] text-white rounded-lg hover:bg-[#cae3ea]"
               >
                 Add
               </button>

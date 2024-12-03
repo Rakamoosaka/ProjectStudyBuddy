@@ -130,7 +130,7 @@ const Profile = () => {
         </div>
         <button
           onClick={() => setIsEditPopupOpen(true)}
-          className="bg-[#C2DAE1] text-[#274B6D] px-7 mt-auto rounded-lg"
+          className="bg-[#C2DAE1] text-[#274B6D] hover:bg-[#cae3ea] px-7 mt-auto rounded-lg"
         >
           Edit profile
         </button>
