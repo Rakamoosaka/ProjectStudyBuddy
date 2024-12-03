@@ -4,11 +4,13 @@ import axios from "axios";
 const AcademicTab = ({ edit }) => {
   const [strengths, setStrengths] = useState([]);
   const [weaknesses, setWeaknesses] = useState([]);
+  const [allDisciplines, setAllDisciplines] = useState([]);
   const [newDiscipline, setNewDiscipline] = useState({
     id: "",
     skillLevel: "",
   });
   const [isAddDisciplineOpen, setIsAddDisciplineOpen] = useState(false);
+  const [isAllDisciplinesOpen, setIsAllDisciplinesOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -37,8 +39,26 @@ const AcademicTab = ({ edit }) => {
     }
   };
 
+  const fetchAllDisciplines = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/user/profile/all-disciplines",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setAllDisciplines(response.data);
+    } catch (err) {
+      console.error("Error fetching all disciplines:", err);
+      alert("Failed to fetch all disciplines. Please try again.");
+    }
+  };
+
   useEffect(() => {
     fetchDisciplines();
+    fetchAllDisciplines();
   }, []);
 
   const handleAddDiscipline = async () => {
@@ -124,6 +144,7 @@ const AcademicTab = ({ edit }) => {
 
   return (
     <div className="p-6 w-full flex flex-col items-center">
+      {/* Strengths and Weaknesses */}
       <div className="w-10/12 flex flex-col md:flex-row justify-between relative">
         {/* Strengths */}
         <div className="flex flex-col items-center w-full md:w-[45%] pr-2">
@@ -224,6 +245,34 @@ const AcademicTab = ({ edit }) => {
               >
                 Add
               </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* View All Disciplines */}
+      {edit && (
+        <div className="mt-12 flex flex-col items-center">
+          <button
+            className="px-6 py-2 bg-[#C2DAE1] text-[#162850] rounded-lg hover:bg-[#cae3ea] focus:outline-none"
+            onClick={() => setIsAllDisciplinesOpen(!isAllDisciplinesOpen)}
+          >
+            {isAllDisciplinesOpen
+              ? "Hide All Disciplines"
+              : "View All Disciplines"}
+          </button>
+          {isAllDisciplinesOpen && (
+            <div
+              className="mt-4 w-full md:w-8/12 max-w-xl h-64 border border-gray-300 rounded-lg overflow-y-auto"
+              style={{ maxHeight: "16rem" }}
+            >
+              <ul className="space-y-2 text-[#162850] px-4 py-2 w-full">
+                {allDisciplines.map((discipline) => (
+                  <li key={discipline.id}>
+                    {discipline.name} (ID: {discipline.id})
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>

@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // For navigation
 
 const Recommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
+  const navigate = useNavigate(); // Initialize navigation
 
   useEffect(() => {
-    // Fetch recommendations
     const fetchRecommendations = async () => {
       setLoading(true);
       try {
-        console.log("Fetching recommendations...");
         const response = await axios.get(
-          "http://localhost:8080/matching/default",
+          "http://localhost:8080/user/matching/default",
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        console.log("Recommendations data:", response.data);
+        console.log("Recommendations:", response.data);
         setRecommendations(response.data);
         setLoading(false);
       } catch (err) {
@@ -33,6 +33,10 @@ const Recommendations = () => {
 
     fetchRecommendations();
   }, [token]);
+
+  const handleNavigateToProfile = (buddiesId) => {
+    navigate(`/profilepage/${buddiesId}`); // Navigate to the recommended user's profile page
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -53,20 +57,22 @@ const Recommendations = () => {
         />
       </div>
       <div className="flex flex-wrap gap-4">
-        {recommendations.map((rec, index) => (
+        {recommendations.map((rec) => (
           <div
-            key={index}
+            key={rec.BuddiesId}
             className="flex flex-col items-center bg-white shadow rounded-lg p-3"
             style={{ flex: "1 1 calc(33.333% - 1rem)" }}
+            onClick={() => handleNavigateToProfile(rec.BuddiesId)} // Navigate on click
           >
-            <img
-              src={rec.profilePicture || "https://via.placeholder.com/100"}
-              alt={`${rec.username}'s profile`}
-              className="w-16 h-16 rounded-full mb-2"
-            />
-            <h3 className="text-sm font-medium">{rec.username}</h3>
+            <h3 className="text-sm font-medium">{rec.BuddiesId}</h3>
             <p className="text-xs text-gray-600 text-center">
-              {rec.about || "No bio available."}
+              Subjects you can help: {rec.MyHelpToBuddieSubjects || "N/A"}
+            </p>
+            <p className="text-xs text-gray-600 text-center">
+              Subjects they can help you: {rec.BuddieHelpToMeSubjects || "N/A"}
+            </p>
+            <p className="text-xs text-gray-600 text-center">
+              Match Score: {rec.totalScore || "N/A"}
             </p>
           </div>
         ))}
