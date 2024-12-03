@@ -108,14 +108,14 @@ const Recommendations = () => {
   return (
     <div>
       <div className="flex flex-wrap justify-between mb-4">
-        <h2 className="text-xl font-bold">Recommendations</h2>
+        <h2 className="text-xl font-bold text-main">Recommendations</h2>
         <div className="flex items-center">
           <input
             type="text"
             placeholder="Find friends by name"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="p-2 text-base border border-black rounded-md text-black placeholder-black bg-transparent focus:outline-none focus:border-blue-500"
+            className="p-2 text-base border border-[#C2DAE1] rounded-md text-[#274B6D] placeholder-black bg-transparent focus:outline-none focus:border-[#5cb5d0]"
           />
           <button
             onClick={handleSearch}
