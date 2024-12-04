@@ -16,34 +16,60 @@ const Profile = () => {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const token = localStorage.getItem("token");
   const [isExpanded, setIsExpanded] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState(null);
 
   const toggleExpanded = () => {
     setIsExpanded((prevState) => !prevState);
   };
 
   useEffect(() => {
-    // Fetch user profile data
-    axios
-      .get("http://localhost:8080/user/profile/details", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setUserData(response.data);
-        console.log("User Data:", response.data);
-      })
-      .catch((error) => {
+    const fetchUserProfile = async () => {
+      try {
+        // Fetch user details
+        const profileResponse = await axios.get(
+          "http://localhost:8080/user/profile/details",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setUserData(profileResponse.data);
+
+        // Fetch avatar
+        try {
+          const avatarResponse = await axios.get(
+            "http://localhost:8080/user/profile/avatar/my-get",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setAvatarUrl(avatarResponse.data.avatarUrl);
+        } catch (avatarError) {
+          if (avatarError.response && avatarError.response.status === 404) {
+            console.warn("Avatar not found. Defaulting to placeholder.");
+            setAvatarUrl(null); // Use placeholder if avatar not found
+          } else {
+            console.error("Error fetching avatar:", avatarError.message);
+          }
+        }
+      } catch (error) {
         console.error(
           "Error fetching user profile:",
           error.response || error.message
         );
-      });
-  }, []);
+      }
+    };
+
+    fetchUserProfile();
+  }, [token]);
 
   const handleProfileUpdate = async () => {
     try {
-      const response = await axios.get(
+      const profileResponse = await axios.get(
         "http://localhost:8080/user/profile/details",
         {
           headers: {
@@ -51,7 +77,29 @@ const Profile = () => {
           },
         }
       );
-      setUserData(response.data);
+
+      setUserData(profileResponse.data);
+
+      // Refresh avatar
+      try {
+        const avatarResponse = await axios.get(
+          "http://localhost:8080/user/profile/avatar/my-get",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setAvatarUrl(avatarResponse.data.avatarUrl);
+      } catch (avatarError) {
+        if (avatarError.response && avatarError.response.status === 404) {
+          console.warn("Avatar not found during profile update.");
+          setAvatarUrl(null);
+        } else {
+          console.error("Error updating avatar:", avatarError.message);
+        }
+      }
+
       setIsEditPopupOpen(false);
       alert("Profile updated successfully!");
     } catch (error) {
@@ -63,26 +111,53 @@ const Profile = () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    const formData = new FormData();
-    formData.append("file", file);
+    // Load the image and crop it to a square
+    const cropToSquare = (file) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          const size = Math.min(img.width, img.height); // Use the smaller dimension for cropping
+          const canvas = document.createElement("canvas");
+          canvas.width = size;
+          canvas.height = size;
+
+          const ctx = canvas.getContext("2d");
+          const offsetX = (img.width - size) / 2;
+          const offsetY = (img.height - size) / 2;
+
+          ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, size, size);
+          canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+            else reject(new Error("Canvas cropping failed."));
+          }, file.type);
+        };
+        img.onerror = () => reject(new Error("Failed to load image."));
+        img.src = URL.createObjectURL(file);
+      });
+    };
 
     try {
-      const response = await axios.post(
-        "/user/profile/avatar/upload",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("Avatar upload response:", response.data);
-      handleProfileUpdate(); // Refresh the profile after uploading
+      const croppedImageBlob = await cropToSquare(file);
+      const formData = new FormData();
+      formData.append("file", croppedImageBlob, file.name);
+
+      const endpoint = avatarUrl
+        ? "http://localhost:8080/user/profile/avatar/update"
+        : "http://localhost:8080/user/profile/avatar/upload";
+
+      const response = await axios.post(endpoint, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setAvatarUrl(response.data.avatarUrl);
       alert("Avatar updated successfully!");
+      handleProfileUpdate();
     } catch (error) {
-      console.error("Error uploading avatar:", error.response || error.message);
-      alert("Failed to upload avatar. Please try again.");
+      console.error("Error uploading cropped avatar:", error.message);
+      alert("Failed to upload/update avatar. Please try again.");
     }
   };
 
@@ -116,9 +191,9 @@ const Profile = () => {
         <div className="relative">
           <label htmlFor="avatar-upload" className="cursor-pointer">
             <img
-              src={userData.avatarUrl || "https://via.placeholder.com/150"}
+              src={avatarUrl || "https://via.placeholder.com/150"}
               alt={`${userData?.username}'s profile`}
-              className="rounded-full w-32 h-32"
+              className="rounded-lg w-32 h-32"
             />
           </label>
           <input
