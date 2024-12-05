@@ -28,7 +28,7 @@ const SignIn = () => {
 
     try {
       const response = await axios.post(
-        "/auth/login",
+        "/auth/register",
         { email, password },
         {
           headers: { "Content-Type": "application/json" },
