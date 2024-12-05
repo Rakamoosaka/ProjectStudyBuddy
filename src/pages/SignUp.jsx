@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Header from "../components/Header";
 import signupImage from "../assets/svg/signup.svg";
 import { useNavigate } from "react-router-dom";
-import axios from "../axios";
+import axios from "axios";
 import useAuth from "../hooks/useAuth";
 
 const USER_REGEX = /^[A-Za-z ]{4,24}$/;
@@ -74,7 +74,10 @@ const SignUp = () => {
         gender,
       };
 
-      const response = await axios.post("/auth/register", userData);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/auth/register`,
+        userData
+      );
       console.log("User registered successfully:", response.data);
 
       setAuth({
