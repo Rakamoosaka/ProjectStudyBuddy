@@ -75,7 +75,7 @@ const SignUp = () => {
       };
 
       const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/auth/register`,
+        `https://studybuddy-377394518699.us-central1.run.app/auth/register`,
         userData
       );
       console.log("User registered successfully:", response.data);
