@@ -5,10 +5,12 @@ import axios from "../../axios";
 const RequestsFromMe = () => {
   const [requests, setRequests] = useState([]);
   const navigate = useNavigate();
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     axios
-      .get("/user/friends/requests/from-me") // Updated request path
+      .get("/user/friends/requests/from-me", {
+        headers: { Authorization: `Bearer ${token}` },
+      }) // Updated request path
       .then((response) => {
         console.log("Requests data:", response.data);
         setRequests(response.data);
@@ -22,7 +24,9 @@ const RequestsFromMe = () => {
 
   const handleDeleteRequest = (requestId) => {
     axios
-      .delete(`/user/friends/requests/${requestId}/delete`) // Updated request path
+      .delete(`/user/friends/requests/${requestId}/delete`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }) // Updated request path
       .then(() => {
         setRequests((prevRequests) =>
           prevRequests.filter((request) => request.requestId !== requestId)

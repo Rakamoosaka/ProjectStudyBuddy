@@ -7,10 +7,13 @@ import trashBinSVG from "../../assets/svg/trashBinSVG.svg";
 const MyFriends = () => {
   const [friends, setFriends] = useState([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     axios
-      .get("/user/friends/show") // Updated request path
+      .get("/user/friends/show", {
+        headers: { Authorization: `Bearer ${token}` },
+      }) // Updated request path
       .then((response) => {
         console.log("Friends:", response.data);
         setFriends(response.data);
@@ -20,7 +23,9 @@ const MyFriends = () => {
 
   const handleTrashBinIcon = (friendId) => {
     axios
-      .delete(`/user/friends/delete/${friendId}`) // Updated request path
+      .delete(`/user/friends/delete/${friendId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }) // Updated request path
       .then(() => {
         setFriends((prevFriends) =>
           prevFriends.filter((f) => f.id !== friendId)

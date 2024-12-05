@@ -166,7 +166,7 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
                 <button
                   onClick={() => handleRemoveLanguage(language.languageName)}
                   disabled={isProcessing}
-                  className="text-red-500 text-sm hover:underline"
+                  className="text-[#b00000] text-sm hover:underline"
                 >
                   Remove
                 </button>
@@ -204,14 +204,14 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="bg-gray-300 text-gray-800 px-3 py-1 rounded-lg hover:bg-gray-400"
+            className="bg-[#d1d5dba9] text-gray-800 px-3 py-1 rounded-lg hover:bg-[#d1d5db]"
             disabled={isProcessing}
           >
             Cancel
           </button>
           <button
             onClick={handleSaveChanges}
-            className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600"
+            className="bg-[#274B6D] text-white px-3 py-1 rounded-lg hover:bg-[#274b6ddc]"
             disabled={isProcessing}
           >
             Save Changes

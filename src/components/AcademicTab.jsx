@@ -38,14 +38,11 @@ const AcademicTab = ({ edit }) => {
 
   const fetchAllDisciplines = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/user/profile/all-disciplines",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get("/user/profile/all-disciplines", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setAllDisciplines(response.data);
     } catch (err) {
       console.error("Error fetching all disciplines:", err);
@@ -67,7 +64,7 @@ const AcademicTab = ({ edit }) => {
 
     try {
       await axios.post(
-        "http://localhost:8080/user/profile/discipline/add",
+        "/user/profile/discipline/add",
         { subDisciplineId: id, skillLevel },
         {
           headers: {
@@ -93,7 +90,7 @@ const AcademicTab = ({ edit }) => {
 
     try {
       await axios.put(
-        `http://localhost:8080/user/profile/discipline/edit?subDisciplineId=${id}`,
+        `/user/profile/discipline/edit?subDisciplineId=${id}`,
         { skillLevel },
         {
           headers: {
@@ -116,7 +113,7 @@ const AcademicTab = ({ edit }) => {
 
     try {
       await axios.delete(
-        `http://localhost:8080/user/profile/discipline/delete?subDisciplineId=${id}`,
+        `/user/profile/discipline/delete?subDisciplineId=${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -135,7 +135,8 @@ const Profile = () => {
       const endpoint = avatarUrl
         ? "/user/profile/avatar/update"
         : "/user/profile/avatar/upload";
-
+      console.log("Form Data:", formData);
+      console.log("Token:", token);
       const response = await axios.post(endpoint, formData, {
         headers: {
           Authorization: `Bearer ${token}`,

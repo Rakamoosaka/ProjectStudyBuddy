@@ -76,6 +76,7 @@ const ProfilePage = () => {
       });
       setRequestSent(true); // Update state to indicate the request was sent
       alert("Friend request sent successfully!");
+      console.log(response.data);
     } catch (err) {
       console.error(
         "Error sending friend request:",

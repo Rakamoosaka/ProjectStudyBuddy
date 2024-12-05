@@ -8,10 +8,13 @@ const RequestsToMe = () => {
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     axios
-      .get("/user/friends/requests/to-me") // Updated request path
+      .get("/user/friends/requests/to-me", {
+        headers: { Authorization: `Bearer ${token}` },
+      }) // Updated request path
       .then((response) => {
         setRequests(response.data);
         setLoading(false);
@@ -25,7 +28,13 @@ const RequestsToMe = () => {
   const handleAccept = (requestId) => {
     setProcessing(true);
     axios
-      .post(`/user/friends/requests/${requestId}/accept`) // Updated request path
+      .post(
+        `/user/friends/requests/${requestId}/accept`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      ) // Updated request path
       .then(() => {
         setRequests((prevRequests) =>
           prevRequests.filter((req) => req.id !== requestId)
@@ -38,7 +47,13 @@ const RequestsToMe = () => {
   const handleDecline = (requestId) => {
     setProcessing(true);
     axios
-      .post(`/user/friends/requests/${requestId}/decline`) // Updated request path
+      .post(
+        `/user/friends/requests/${requestId}/decline`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      ) // Updated request path
       .then(() => {
         setRequests((prevRequests) =>
           prevRequests.filter((req) => req.id !== requestId)
