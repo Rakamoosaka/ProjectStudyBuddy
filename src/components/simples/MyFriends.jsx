@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import axios from "../../axios";
 import chatSVG from "../../assets/svg/chatSVG.svg";
 import trashBinSVG from "../../assets/svg/trashBinSVG.svg";
 
 const MyFriends = () => {
   const [friends, setFriends] = useState([]);
-  const navigate = useNavigate(); // Initialize useNavigate
-
-  const token = localStorage.getItem("token"); // Get token from localStorage
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/user/friends/show", {
-        headers: {
-          Authorization: `Bearer ${token}`, // Add Authorization header
-        },
-      })
+      .get("/user/friends/show") // Updated request path
       .then((response) => {
         console.log("Friends:", response.data);
         setFriends(response.data);
@@ -26,11 +20,7 @@ const MyFriends = () => {
 
   const handleTrashBinIcon = (friendId) => {
     axios
-      .delete(`http://localhost:8080/user/friends/delete/${friendId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .delete(`/user/friends/delete/${friendId}`) // Updated request path
       .then(() => {
         setFriends((prevFriends) =>
           prevFriends.filter((f) => f.id !== friendId)
@@ -40,7 +30,7 @@ const MyFriends = () => {
   };
 
   const handleNavigateToProfile = (friendId) => {
-    navigate(`/profilepage/${friendId}`); // Navigate to the friend's ProfilePage
+    navigate(`/profilepage/${friendId}`);
   };
 
   return (
@@ -55,7 +45,7 @@ const MyFriends = () => {
             >
               <div
                 className="flex items-center gap-3 cursor-pointer"
-                onClick={() => handleNavigateToProfile(friend.id)} // Navigate on click
+                onClick={() => handleNavigateToProfile(friend.id)}
               >
                 <div className="w-10 h-10 bg-gray-400 rounded-full"></div>
                 <div className="flex flex-col">

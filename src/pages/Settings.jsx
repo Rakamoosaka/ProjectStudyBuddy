@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../axios";
 import HeaderWithDropdown from "../components/HeaderWithDropdown";
 import useAuth from "../hooks/useAuth";
 import { useLogout } from "../hooks/logout";
@@ -75,16 +75,12 @@ const Settings = () => {
 
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.put(
-        "http://localhost:8080/user/settings",
-        updatedSettings,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.put("/user/settings", updatedSettings, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       console.log("Response:", response.data);
       alert("User settings updated successfully.");
     } catch (error) {
@@ -97,15 +93,12 @@ const Settings = () => {
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await axios.delete(
-        "http://localhost:8080/user/settings/delete",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.delete("/user/settings/delete", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      });
       console.log(response.data);
       handleLogout();
       alert("User account deleted successfully.");

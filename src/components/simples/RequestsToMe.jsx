@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import axios from "../../axios";
 
 const RequestsToMe = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState(false);
-
-  const token = localStorage.getItem("token");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/user/friends/requests/to-me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get("/user/friends/requests/to-me") // Updated request path
       .then((response) => {
         setRequests(response.data);
         setLoading(false);
@@ -31,15 +25,7 @@ const RequestsToMe = () => {
   const handleAccept = (requestId) => {
     setProcessing(true);
     axios
-      .post(
-        `http://localhost:8080/user/friends/requests/${requestId}/accept`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .post(`/user/friends/requests/${requestId}/accept`) // Updated request path
       .then(() => {
         setRequests((prevRequests) =>
           prevRequests.filter((req) => req.id !== requestId)
@@ -52,15 +38,7 @@ const RequestsToMe = () => {
   const handleDecline = (requestId) => {
     setProcessing(true);
     axios
-      .post(
-        `http://localhost:8080/user/friends/requests/${requestId}/decline`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .post(`/user/friends/requests/${requestId}/decline`) // Updated request path
       .then(() => {
         setRequests((prevRequests) =>
           prevRequests.filter((req) => req.id !== requestId)
@@ -71,7 +49,7 @@ const RequestsToMe = () => {
   };
 
   const handleNavigateToProfile = (userId) => {
-    navigate(`/profilepage/${userId}`); // Navigate to the user's profile page
+    navigate(`/profilepage/${userId}`);
   };
 
   if (loading) {
@@ -94,7 +72,7 @@ const RequestsToMe = () => {
             >
               <div
                 className="flex items-center gap-4 cursor-pointer"
-                onClick={() => handleNavigateToProfile(request.senderId)} // Navigate to the profile
+                onClick={() => handleNavigateToProfile(request.senderId)}
               >
                 <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
                 <div>

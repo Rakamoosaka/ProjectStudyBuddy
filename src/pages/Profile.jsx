@@ -26,21 +26,18 @@ const Profile = () => {
     const fetchUserProfile = async () => {
       try {
         // Fetch user details
-        const profileResponse = await axios.get(
-          "http://localhost:8080/user/profile/details",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const profileResponse = await axios.get("/user/profile/details", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         setUserData(profileResponse.data);
 
         // Fetch avatar
         try {
           const avatarResponse = await axios.get(
-            "http://localhost:8080/user/profile/avatar/my-get",
+            "/user/profile/avatar/my-get",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -69,27 +66,21 @@ const Profile = () => {
 
   const handleProfileUpdate = async () => {
     try {
-      const profileResponse = await axios.get(
-        "http://localhost:8080/user/profile/details",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const profileResponse = await axios.get("/user/profile/details", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setUserData(profileResponse.data);
 
       // Refresh avatar
       try {
-        const avatarResponse = await axios.get(
-          "http://localhost:8080/user/profile/avatar/my-get",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const avatarResponse = await axios.get("/user/profile/avatar/my-get", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setAvatarUrl(avatarResponse.data.avatarUrl);
       } catch (avatarError) {
         if (avatarError.response && avatarError.response.status === 404) {
@@ -142,8 +133,8 @@ const Profile = () => {
       formData.append("file", croppedImageBlob, file.name);
 
       const endpoint = avatarUrl
-        ? "http://localhost:8080/user/profile/avatar/update"
-        : "http://localhost:8080/user/profile/avatar/upload";
+        ? "/user/profile/avatar/update"
+        : "/user/profile/avatar/upload";
 
       const response = await axios.post(endpoint, formData, {
         headers: {

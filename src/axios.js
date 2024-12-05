@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:8080", // Matches your Spring Boot backend URL
+  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:8080",
 });
 
 export default instance;

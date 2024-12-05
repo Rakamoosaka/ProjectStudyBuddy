@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../axios";
 import { useNavigate } from "react-router-dom"; // For navigation
 
 const Recommendations = () => {
@@ -15,7 +15,7 @@ const Recommendations = () => {
   useEffect(() => {
     // Fetch friends
     axios
-      .get("http://localhost:8080/user/friends/show", {
+      .get("/user/friends/show", {
         headers: {
           Authorization: `Bearer ${token}`, // Add Authorization header
         },
@@ -33,14 +33,11 @@ const Recommendations = () => {
     const fetchRecommendations = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          "http://localhost:8080/user/matching/default",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get("/user/matching/default", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setRecommendations(response.data);
         setLoading(false);
       } catch (err) {
@@ -57,14 +54,11 @@ const Recommendations = () => {
     // Fetch all usernames
     const fetchUsernames = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/user/profile/all-usernames",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get("/user/profile/all-usernames", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setAllUsernames(response.data); // Update state with all usernames
       } catch (err) {
         console.error("Error fetching usernames:", err);

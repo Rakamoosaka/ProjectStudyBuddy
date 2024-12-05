@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../axios";
 
 const RequestsFromMe = () => {
   const [requests, setRequests] = useState([]);
-  const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/user/friends/requests/from-me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get("/user/friends/requests/from-me") // Updated request path
       .then((response) => {
         console.log("Requests data:", response.data);
         setRequests(response.data);
       })
       .catch((error) => console.error("Error fetching requests:", error));
-  }, [token]);
+  }, []);
 
   const handleNavigateToProfile = (userId) => {
     navigate(`/profilepage/${userId}`);
@@ -27,16 +22,8 @@ const RequestsFromMe = () => {
 
   const handleDeleteRequest = (requestId) => {
     axios
-      .delete(
-        `http://localhost:8080/user/friends/requests/${requestId}/delete`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .delete(`/user/friends/requests/${requestId}/delete`) // Updated request path
       .then(() => {
-        // Remove the deleted request from the state
         setRequests((prevRequests) =>
           prevRequests.filter((request) => request.requestId !== requestId)
         );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../axios";
 
 const AcademicTab = ({ edit }) => {
   const [strengths, setStrengths] = useState([]);
@@ -19,14 +19,11 @@ const AcademicTab = ({ edit }) => {
   const fetchDisciplines = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        "http://localhost:8080/user/profile/discipline",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get("/user/profile/discipline", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const disciplines = response.data;
       setStrengths(disciplines.filter((item) => item.skillLevel > 5));

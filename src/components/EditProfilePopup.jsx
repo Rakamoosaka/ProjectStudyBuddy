@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../axios";
 
 const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
   const [about, setAbout] = useState(userDetails?.about || "");
@@ -26,12 +26,9 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
 
   const fetchLanguageSuggestions = async (query) => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/user/profile/language/all",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.get("/user/profile/language/all", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       // Validate response structure and filter languages
       const filteredLanguages = (response.data || []).filter(
@@ -94,7 +91,7 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
       // Update "About Me"
       if (about !== userDetails?.about) {
         await axios.put(
-          "http://localhost:8080/user/profile/about/edit",
+          "/user/profile/about/edit",
           { about },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -105,7 +102,7 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
       // Add new languages to the backend
       for (const language of addedLanguages) {
         await axios.post(
-          "http://localhost:8080/user/profile/language/add",
+          "/user/profile/language/add",
           { languageName: language.languageName },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -115,13 +112,10 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
 
       // Remove deleted languages from the backend
       for (const language of removedLanguages) {
-        await axios.delete(
-          "http://localhost:8080/user/profile/language/delete",
-          {
-            data: { languageName: language.languageName },
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        await axios.delete("/user/profile/language/delete", {
+          data: { languageName: language.languageName },
+          headers: { Authorization: `Bearer ${token}` },
+        });
       }
 
       // Notify parent to refresh profile data
