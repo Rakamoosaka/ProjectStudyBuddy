@@ -132,17 +132,18 @@ const Profile = () => {
       const formData = new FormData();
       formData.append("file", croppedImageBlob, file.name);
 
-      const endpoint = avatarUrl
-        ? "/user/profile/avatar/update"
-        : "/user/profile/avatar/upload";
       console.log("Form Data:", formData);
       console.log("Token:", token);
-      const response = await axios.post(endpoint, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "/user/profile/avatar/upload",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       setAvatarUrl(response.data.avatarUrl);
       alert("Avatar updated successfully!");
