@@ -156,30 +156,6 @@ const SignUp = () => {
               className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
 
-            {/* Password */}
-            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
-              Create a password
-            </label>
-            <input
-              type="password"
-              placeholder="********"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
-            />
-
-            {/* Confirm Password */}
-            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
-              Confirm password
-            </label>
-            <input
-              type="password"
-              placeholder="********"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
-            />
-
             {/* Gender */}
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
               Gender
@@ -191,7 +167,6 @@ const SignUp = () => {
             >
               <option value="male">Male</option>
               <option value="female">Female</option>
-              <option value="other">Other</option>
             </select>
 
             {/* Birthdate */}
@@ -246,6 +221,30 @@ const SignUp = () => {
                 ))}
               </select>
             </div>
+
+            {/* Password */}
+            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
+              Create a password
+            </label>
+            <input
+              type="password"
+              placeholder="********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+            />
+
+            {/* Confirm Password */}
+            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
+              Confirm password
+            </label>
+            <input
+              type="password"
+              placeholder="********"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+            />
 
             {/* Buttons */}
             <div className="flex justify-between w-full mt-6">
