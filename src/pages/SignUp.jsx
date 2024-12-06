@@ -13,7 +13,7 @@ const EMAIL_REGEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { setAuth } = useAuth(); // Get setAuth from context
+  const { setAuth } = useAuth();
 
   const [email, setEmail] = useState("");
   const [username, setUser] = useState("");
@@ -26,27 +26,17 @@ const SignUp = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const userRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
+  const snackbarRef = useRef(null);
+  const [snackbarConfig, setSnackbarConfig] = useState({
+    message: "",
+    type: "",
+  });
 
   // Validation States
   const [validEmail, setValidEmail] = useState(false);
   const [validUsername, setValidUsername] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
   const [validMatch, setValidMatch] = useState(false);
-
-  // Validation Feedback States
-  const [emailFocus, setEmailFocus] = useState(false);
-  const [usernameFocus, setUsernameFocus] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
-  const [confirmPasswordFocus, setConfirmPasswordFocus] = useState(false);
-
-  const snackbarRef = useRef(null);
-  const [snackbarConfig, setSnackbarConfig] = useState({
-    message: "",
-    type: "",
-  });
 
   // Focus on username input on load
   useEffect(() => {
@@ -141,94 +131,86 @@ const SignUp = () => {
               </p>
             )}
 
+            {/* Gender */}
+            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
+              Gender
+            </label>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+            >
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+
+            {/* Birthdate */}
+            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
+              Your birthdate
+            </label>
+            <div className="flex justify-between w-full mb-6 text-[#162850] font-light">
+              <select
+                value={birthMonth}
+                onChange={(e) => setBirthMonth(e.target.value)}
+                className="w-6/12 p-2 text-lg rounded-lg border font-josefinSans border-[#162850] focus:outline-none bg-[#F6F7FF]"
+              >
+                {[
+                  "January",
+                  "February",
+                  "March",
+                  "April",
+                  "May",
+                  "June",
+                  "July",
+                  "August",
+                  "September",
+                  "October",
+                  "November",
+                  "December",
+                ].map((month) => (
+                  <option key={month} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={birthDay}
+                onChange={(e) => setBirthDay(e.target.value)}
+                className="w-2/12 p-2 text-lg rounded-lg border font-josefinSans border-[#162850] focus:outline-none bg-[#F6F7FF]"
+              >
+                {[...Array(31).keys()].map((day) => (
+                  <option key={day + 1} value={day + 1}>
+                    {day + 1}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={birthYear}
+                onChange={(e) => setBirthYear(e.target.value)}
+                className="w-3/12 p-2 text-lg rounded-lg border font-josefinSans border-[#162850] focus:outline-none bg-[#F6F7FF]"
+              >
+                {[...Array(100).keys()].map((year) => (
+                  <option key={year + 1925} value={year + 1925}>
+                    {year + 1925}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Other form inputs */}
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
               Your email
             </label>
             <input
-              ref={emailRef}
+              ref={userRef}
               type="email"
               placeholder="example@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onFocus={() => setEmailFocus(true)}
-              onBlur={() => setEmailFocus(false)}
-              className="w-full p-2 mb-1 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+              className="w-full p-2 mb-6 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
-            <p
-              className={`text-xs mt-1 ${
-                emailFocus && !validEmail ? "text-[#b00000]" : "hidden"
-              }`}
-            >
-              Must be a valid email address.
-            </p>
-
-            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
-              Name
-            </label>
-            <input
-              ref={userRef}
-              type="text"
-              placeholder="Omar Abdulrahman"
-              value={username}
-              onChange={(e) => setUser(e.target.value)}
-              onFocus={() => setUsernameFocus(true)}
-              onBlur={() => setUsernameFocus(false)}
-              className="w-full p-2 mb-1 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
-            />
-            <p
-              className={`text-xs mt-1 ${
-                usernameFocus && !validUsername ? "text-[#b00000]" : "hidden"
-              }`}
-            >
-              Username can only contain uppercase and lowercase letters, and be
-              4-24 characters long.
-            </p>
-
-            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
-              Create a password
-            </label>
-            <input
-              ref={passwordRef}
-              type="password"
-              placeholder="********"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onFocus={() => setPasswordFocus(true)}
-              onBlur={() => setPasswordFocus(false)}
-              className="w-full p-2 mb-1 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
-            />
-            <p
-              className={`text-xs mt-1 ${
-                passwordFocus && !validPassword ? "text-[#b00000]" : "hidden"
-              }`}
-            >
-              Must be 8-24 characters, with uppercase, lowercase, number, and a
-              special character.
-            </p>
-
-            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
-              Confirm password
-            </label>
-            <input
-              ref={confirmPasswordRef}
-              type="password"
-              placeholder="********"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              onFocus={() => setConfirmPasswordFocus(true)}
-              onBlur={() => setConfirmPasswordFocus(false)}
-              className="w-full p-2 mb-1 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
-            />
-            <p
-              className={`text-xs mt-1 ${
-                confirmPasswordFocus && !validMatch
-                  ? "text-[#b00000]"
-                  : "hidden"
-              }`}
-            >
-              Must match the password above.
-            </p>
-
+            {/* Other input fields */}
             <div className="flex justify-between w-full mt-6">
               <button
                 onClick={handleGoBack}
