@@ -4,6 +4,7 @@ import signupImage from "../assets/svg/signup.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "../axios";
 import useAuth from "../hooks/useAuth";
+import Snackbar from "../components/Snackbar";
 
 const USER_REGEX = /^[A-Za-z ]{4,24}$/;
 const PWD_REGEX =
@@ -40,6 +41,12 @@ const SignUp = () => {
   const [usernameFocus, setUsernameFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [confirmPasswordFocus, setConfirmPasswordFocus] = useState(false);
+
+  const snackbarRef = useRef(null);
+  const [snackbarConfig, setSnackbarConfig] = useState({
+    message: "",
+    type: "",
+  });
 
   // Focus on username input on load
   useEffect(() => {
@@ -81,14 +88,28 @@ const SignUp = () => {
         username,
         token: response.data.token,
       });
-
-      navigate(`/signin`);
+      setErrorMsg("");
+      setSnackbarConfig({
+        message: "Welcome to StudyBuddy!",
+        type: "success",
+      });
+      snackbarRef.current.show();
+      setTimeout(() => {
+        navigate("/signin");
+      }, 2000);
     } catch (error) {
       console.error("Registration failed:", error.response || error.message);
       setErrorMsg(
         error.response?.data?.message ||
           "Registration failed. Please try again."
       );
+      setSnackbarConfig({
+        message:
+          error.response?.data?.message ||
+          "Registration failed. Please try again.",
+        type: "fail",
+      });
+      snackbarRef.current.show();
     }
   };
 
@@ -232,6 +253,11 @@ const SignUp = () => {
           </div>
         </div>
       </div>
+      <Snackbar
+        ref={snackbarRef}
+        message={snackbarConfig.message}
+        type={snackbarConfig.type}
+      />
     </div>
   );
 };
