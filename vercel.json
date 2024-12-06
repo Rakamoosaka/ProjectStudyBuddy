@@ -1,8 +1,20 @@
 {
   "rewrites": [
     {
+      "source": "/auth/(.*)",
+      "destination": "https://studybuddy-377394518699.us-central1.run.app/auth/$1"
+    },
+    {
+      "source": "/user/(.*)",
+      "destination": "https://studybuddy-377394518699.us-central1.run.app/user/$1"
+    },
+    {
+      "source": "/public/(.*)",
+      "destination": "https://studybuddy-377394518699.us-central1.run.app/public/$1"
+    },
+    {
       "source": "/(.*)",
-      "destination": "https://studybuddy-377394518699.us-central1.run.app"
+      "destination": "/"
     }
   ]
 }
