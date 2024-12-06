@@ -81,7 +81,7 @@ const SignUp = () => {
         gender,
       };
 
-      const response = await axios.post("/auth/register", userData);
+      const response = await axios.post("/auth/regist", userData);
       console.log("User registered successfully:", response.data);
 
       setAuth({
