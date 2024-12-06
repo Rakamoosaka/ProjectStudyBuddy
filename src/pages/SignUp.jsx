@@ -131,6 +131,55 @@ const SignUp = () => {
               </p>
             )}
 
+            {/* Email */}
+            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
+              Your email
+            </label>
+            <input
+              ref={userRef}
+              type="email"
+              placeholder="example@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+            />
+
+            {/* Name */}
+            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
+              Name
+            </label>
+            <input
+              type="text"
+              placeholder="Omar Abdulrahman"
+              value={username}
+              onChange={(e) => setUser(e.target.value)}
+              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+            />
+
+            {/* Password */}
+            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
+              Create a password
+            </label>
+            <input
+              type="password"
+              placeholder="********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+            />
+
+            {/* Confirm Password */}
+            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
+              Confirm password
+            </label>
+            <input
+              type="password"
+              placeholder="********"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+            />
+
             {/* Gender */}
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
               Gender
@@ -198,19 +247,7 @@ const SignUp = () => {
               </select>
             </div>
 
-            {/* Other form inputs */}
-            <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
-              Your email
-            </label>
-            <input
-              ref={userRef}
-              type="email"
-              placeholder="example@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 mb-6 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
-            />
-            {/* Other input fields */}
+            {/* Buttons */}
             <div className="flex justify-between w-full mt-6">
               <button
                 onClick={handleGoBack}
