@@ -6,4 +6,4 @@ const instance = axios.create({
 
 export default instance;
 
-// || "http://localhost:8080"
+// || "http://localhost:8080" import.meta.env.VITE_BACKEND_URL,

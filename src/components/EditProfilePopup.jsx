@@ -29,14 +29,14 @@ const EditProfilePopup = ({ isOpen, onClose, userDetails, onUpdate }) => {
       const response = await axios.get("/user/profile/language/all", {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+      console.log("Language suggestions response:", response.data);
       // Validate response structure and filter languages
       const filteredLanguages = (response.data || []).filter(
         (language) =>
           language.name &&
           language.name.toLowerCase().startsWith(query.toLowerCase())
       );
-
+      console.log("Filtered languages:", filteredLanguages);
       setLanguageSuggestions(filteredLanguages);
     } catch (error) {
       console.error("Error fetching language suggestions:", error);
