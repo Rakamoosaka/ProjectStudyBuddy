@@ -74,11 +74,12 @@ const Recommendations = () => {
   };
 
   const handleSearch = () => {
-    // Find user ID by username
-    const user = allUsernames.find(
-      (usernameObj) =>
-        usernameObj.username.toLowerCase() === searchInput.toLowerCase()
-    );
+    const user = allUsernames.find((usernameObj) => {
+      // Safeguard for null or undefined values
+      if (!usernameObj?.username || !searchInput) return false;
+      return usernameObj.username.toLowerCase() === searchInput.toLowerCase();
+    });
+
     if (user) {
       handleNavigateToProfile(user.id);
     } else {
