@@ -126,7 +126,7 @@ const SearchPage = () => {
   return (
     <div className="relative flex flex-col md:flex-row h-screen">
       {/* Sidebar */}
-      <aside className="w-full md:w-1/4 bg-[#274B6D] text-white p-6 shadow-strong-right z-10 rounded-xl mx-auto md:mx-4 my-4 flex flex-col justify-start overflow-y-auto">
+      <aside className="w-full md:w-1/4 bg-[#274B6D] text-white p-6 shadow-strong-right z-10 rounded-xl mx-auto md:mx-4 my-4 flex flex-col justify-start overflow-y-auto scrollbar">
         <h1 className="text-2xl md:text-3xl text-center font-bold mb-4">
           Find your study buddy
         </h1>

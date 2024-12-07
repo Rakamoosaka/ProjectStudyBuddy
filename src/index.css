@@ -24,3 +24,17 @@ body {
   margin-left: 10%;
   margin-right: 10%;
 }
+
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #526f8a transparent;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #526f8a;
+  border-radius: 4px;
+}
