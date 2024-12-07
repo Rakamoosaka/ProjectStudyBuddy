@@ -41,7 +41,6 @@ const Recommendations = () => {
         });
         setRecommendations(response.data);
         setLoading(false);
-        setError(null);
       } catch (err) {
         console.error("Error fetching recommendations:", err);
         setError("Failed to load recommendations.");
@@ -98,10 +97,6 @@ const Recommendations = () => {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   return (
     <div>
       <div className="flex flex-wrap justify-between mb-4">
@@ -122,24 +117,30 @@ const Recommendations = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-wrap gap-4">
-        {filteredRecommendations.slice(0, 3).map((rec) => (
-          <div
-            key={rec.buddiesName}
-            className="flex flex-col items-center bg-white shadow rounded-lg p-3"
-            style={{ flex: "1 1 calc(33.333% - 1rem)" }}
-            onClick={() => handleNavigateToProfile(rec.buddiesId)} // Navigate on click
-          >
-            <h3 className="text-sm font-medium">{rec.buddiesName}</h3>
-            <p className="text-xs text-gray-600 text-center">
-              You are good at: {rec.myHelpToBuddieSubjects || "N/A"}
-            </p>
-            <p className="text-xs text-gray-600 text-center">
-              He/She could help with: {rec.buddieHelpToMeSubjects || "N/A"}
-            </p>
-          </div>
-        ))}
-      </div>
+      {error ? (
+        <div>{error}</div>
+      ) : filteredRecommendations.length === 0 ? (
+        <div>No recommendations found.</div>
+      ) : (
+        <div className="flex flex-wrap gap-4">
+          {filteredRecommendations.slice(0, 3).map((rec) => (
+            <div
+              key={rec.buddiesName}
+              className="flex flex-col items-center bg-white shadow rounded-lg p-3"
+              style={{ flex: "1 1 calc(33.333% - 1rem)" }}
+              onClick={() => handleNavigateToProfile(rec.buddiesId)} // Navigate on click
+            >
+              <h3 className="text-sm font-medium">{rec.buddiesName}</h3>
+              <p className="text-xs text-gray-600 text-center">
+                You are good at: {rec.myHelpToBuddieSubjects || "N/A"}
+              </p>
+              <p className="text-xs text-gray-600 text-center">
+                He/She could help with: {rec.buddieHelpToMeSubjects || "N/A"}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
