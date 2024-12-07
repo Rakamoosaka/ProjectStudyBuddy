@@ -68,12 +68,12 @@ const SearchPage = () => {
         genderFilter: filters.gender,
         locationFilter: filters.country,
       };
-
+      console.log("Search request:", searchRequest);
       const response = await axiosInstance.post(
         "/user/matching/search",
         searchRequest
       );
-
+      console.log("Search results:", response.data);
       const searchResults = response.data.map((user) => {
         // Separate disciplines into well-known and needs help with
         const wellKnownDisciplines = user.disciplines
