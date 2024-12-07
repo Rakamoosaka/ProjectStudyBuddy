@@ -32,6 +32,7 @@ const Recommendations = () => {
     // Fetch recommendations
     const fetchRecommendations = async () => {
       setLoading(true);
+      console.log("Token to fetch recommendations:", token);
       try {
         const response = await axios.get("/user/matching/default", {
           headers: {
