@@ -2,7 +2,7 @@ import React from "react";
 
 export default function AboutSection() {
   return (
-    <section className="relative py-16 px-8 bg-[#f6f7ff] flex justify-center mt-40 font-joan text-[#162850]">
+    <section className="relative py-16 px-8 bg-[#f6f7ff] flex justify-center mt-40 font-joan text-[#162850] overflow-hidden">
       {/* Blob 1 - Positioned behind the title */}
       <img
         src="/blob1.svg"
