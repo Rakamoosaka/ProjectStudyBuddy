@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import DropdownWithBlob from "../components/simples/DropdownWithBlob";
-import LogoImage from "../assets/logo.png";
+import LogoImage from "../assets/Logo.png";
 import tabsSVG from "../assets/svg/tabsSVG.svg"; // Import the SVG
 import axios from "../axios";
 
