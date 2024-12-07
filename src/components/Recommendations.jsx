@@ -41,6 +41,7 @@ const Recommendations = () => {
         });
         setRecommendations(response.data);
         setLoading(false);
+        setError(null);
       } catch (err) {
         console.error("Error fetching recommendations:", err);
         setError("Failed to load recommendations.");
@@ -61,7 +62,6 @@ const Recommendations = () => {
           },
         });
         setAllUsernames(response.data); // Update state with all usernames
-        setError(null);
       } catch (err) {
         console.error("Error fetching usernames:", err);
         setError("Failed to load usernames.");
