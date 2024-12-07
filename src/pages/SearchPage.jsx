@@ -171,12 +171,14 @@ const SearchPage = () => {
         <div className="mb-4">
           <label className="block mb-1 font-semibold">Language:</label>
           {languages.map((language, index) => (
-            <label key={index} className="block">
+            <label key={language.id} className="block">
               <input
                 type="checkbox"
-                onChange={() => handleCheckboxChange("language", language)}
+                onChange={() =>
+                  handleCheckboxChange("language", language.languageName)
+                }
               />{" "}
-              {language}
+              {language.languageName}
             </label>
           ))}
           <hr className="border-t border-white mt-4 mb-4" />
