@@ -1,6 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Footer() {
   const navigate = useNavigate();
@@ -11,6 +10,16 @@ export default function Footer() {
 
     if (token && username) {
       navigate(`/profile/${username}`);
+    } else {
+      navigate(`/signin`); // Redirect to login page if no token is found
+    }
+  };
+
+  const HandleGoToSearchPage = () => {
+    const token = localStorage.getItem("token"); // Check for token in localStorage
+
+    if (token) {
+      navigate(`/searchpage`);
     } else {
       navigate(`/signin`); // Redirect to login page if no token is found
     }
@@ -29,21 +38,21 @@ export default function Footer() {
 
         {/* Navigation Links */}
         <div className="flex flex-col md:flex-row md:space-x-10 text-center space-y-4 md:space-y-0">
-          <a href="home" className="hover:text-gray-300">
+          <Link to="/home" className="hover:text-gray-300">
             Home
-          </a>
-          <a href="searchpage" className="hover:text-gray-300">
+          </Link>
+          <button
+            onclick={HandleGoToSearchPage}
+            className="hover:text-gray-300 cursor-pointer bg-transparent border-none p-0 text-inherit"
+          >
             Search for buddy
-          </a>
+          </button>
           <button
             onClick={handleGoToProfile}
             className="hover:text-gray-300 cursor-pointer bg-transparent border-none p-0 text-inherit"
           >
             Profile
           </button>
-          <a href="chatpage" className="hover:text-gray-300">
-            Chats
-          </a>
         </div>
 
         {/* Social Media Icons */}

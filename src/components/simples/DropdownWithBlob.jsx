@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom"; // React Router for navigation
 import rightArrowPNG from "../../assets/svg/right-arrow.png";
 import down from "../../assets/svg/down.svg";
 import up from "../../assets/svg/up.svg";
-import useAuth from "../../hooks/useAuth";
 import { useLogout } from "../../hooks/logout";
 
 const DropdownWithBlob = () => {
@@ -42,7 +41,7 @@ const DropdownWithBlob = () => {
 
       {/* Dropdown items */}
       {isOpen && (
-        <ul className="absolute top-full mt-2 bg-[#f6f7ff] rounded-lg shadow-lg">
+        <ul className="absolute top-full mt-2 bg-[#f6f7ff] rounded-lg shadow-lg z-10">
           <li className="px-4 text-[#162850] mt-0.5 py-1 hover:bg-[#e7e8ef] cursor-pointer rounded-lg">
             <button
               className="flex items-center justify-center w-full"

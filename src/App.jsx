@@ -9,6 +9,7 @@ import ErrorPage from "./pages/ErrorPage";
 import { AuthProvider } from "./hooks/AuthProvider";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import ProfilePage from "./pages/ProfilePage";
+import SearchPage from "./pages/SearchPage";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -46,6 +47,10 @@ const App = () => {
         {
           path: "/settings",
           element: <Settings />,
+        },
+        {
+          path: "/searchpage",
+          element: <SearchPage />,
         },
       ],
     },

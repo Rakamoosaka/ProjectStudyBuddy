@@ -15,6 +15,9 @@ export default {
         kantumruyPro: ["Kantumruy Pro"],
         rubikGlitch: ["Rubik Glitch"],
       },
+      boxShadow: {
+        "strong-right": "4px 0 4px rgba(0, 0, 0, 0.6)",
+      },
     },
   },
   plugins: [],

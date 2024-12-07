@@ -3,31 +3,31 @@ import HeaderWithDropdown from "../components/HeaderWithDropdown";
 
 const searchResults = [
   {
+    id: 1,
     name: "Omar",
     country: "America",
     subjects: "ICT, General IT systems, Programming",
-    help: "Kazakh language, Sociology",
     image: "path_to_omar_image.jpg",
   },
   {
+    id: 2,
     name: "Askhat",
     country: "Australia",
     subjects: "ICT, General IT systems, Programming",
-    help: "Kazakh language, Sociology",
     image: "path_to_askhat_image.jpg",
   },
   {
+    id: 3,
     name: "Daniyar",
     country: "Serbia",
     subjects: "ICT, General IT systems, Programming",
-    help: "Kazakh language, Sociology",
     image: "path_to_daniyar_image.jpg",
   },
   {
+    id: 4,
     name: "Ayan",
     country: "China",
     subjects: "ICT, General IT systems, Programming",
-    help: "Kazakh language, Sociology",
     image: "path_to_ayan_image.jpg",
   },
 ];
