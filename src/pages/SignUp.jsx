@@ -143,6 +143,13 @@ const SignUp = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
+            <p
+              className={`text-xs mt-1 ${
+                emailFocus && !validEmail ? "text-[#b00000]" : "hidden"
+              }`}
+            >
+              Must be a valid email address.
+            </p>
 
             {/* Name */}
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
@@ -155,6 +162,14 @@ const SignUp = () => {
               onChange={(e) => setUser(e.target.value)}
               className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
+            <p
+              className={`text-xs mt-1 ${
+                usernameFocus && !validUsername ? "text-[#b00000]" : "hidden"
+              }`}
+            >
+              Username can only contain uppercase and lowercase letters, and be
+              4-24 characters long.
+            </p>
 
             {/* Gender */}
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
@@ -233,6 +248,14 @@ const SignUp = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
+            <p
+              className={`text-xs mt-1 ${
+                passwordFocus && !validPassword ? "text-[#b00000]" : "hidden"
+              }`}
+            >
+              Must be 8-24 characters, with uppercase, lowercase, number, and a
+              special character.
+            </p>
 
             {/* Confirm Password */}
             <label className="text-base font-josefinSans text-[#162850] font-medium mb-1">
@@ -245,6 +268,15 @@ const SignUp = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
+            <p
+              className={`text-xs mt-1 ${
+                confirmPasswordFocus && !validMatch
+                  ? "text-[#b00000]"
+                  : "hidden"
+              }`}
+            >
+              Must match the password above.
+            </p>
 
             {/* Buttons */}
             <div className="flex justify-between w-full mt-6">

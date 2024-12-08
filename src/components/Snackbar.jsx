@@ -19,7 +19,7 @@ const Snackbar = forwardRef((props, ref) => {
       }`}
       style={{
         backgroundColor: props.type === "success" ? "#009358" : "#99001f",
-        color: props.type === "success" ? "black" : "white",
+        color: props.type === "success" ? "white" : "white",
         zIndex: 9999,
       }}
     >
