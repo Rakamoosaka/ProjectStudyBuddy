@@ -1,7 +1,6 @@
 # Study Buddy
 
 ## Описание проекта
-<<<<<<< HEAD
 
 **Study Buddy** – это веб-приложение, которое помогает студентам находить других студентов для совместного изучения или обмена знаниями по определённым дисциплинам.
 
@@ -11,24 +10,19 @@
 **Study Buddy** – это веб-приложение, которое помогает студентам находить других студентов для совместного изучения или обмена знаниями по определённым дисциплинам.
 
 ### Основной функционал
->>>>>>> 0ce98a2b24b7bab91f7286f901c82e9172a378d0
 - **Регистрация и авторизация.**
 - **Фильтрация пользователей по предметам и навыкам.**
 - **Просмотр профиля других пользователей.**
 
 ### Скриншоты
-<<<<<<< HEAD
 
 =======
->>>>>>> 0ce98a2b24b7bab91f7286f901c82e9172a378d0
 - Главная страница:
   ![Главная страница](https://github.com/sup1p/studybuddy/blob/main/%7B2FEFEDF1-80D2-4FAC-A607-1E0D431FC6AA%7D.png)
 
 ### Ссылки
-<<<<<<< HEAD
 
 =======
->>>>>>> 0ce98a2b24b7bab91f7286f901c82e9172a378d0
 - [Frontend приложение](https://github.com/Rakamoosaka/ProjectStudyBuddy)
 - [Backend API документация](https://github.com/sup1p/studybuddy/blob/main/API)
 - [Deployed website](https://project-studybuddy.vercel.app)
@@ -40,10 +34,8 @@
 ### Как запустить проект
 
 #### Требования:
-<<<<<<< HEAD
 
 =======
->>>>>>> 0ce98a2b24b7bab91f7286f901c82e9172a378d0
 - **Java**: 17+
 - **Maven**: 3.8+
 - **PostgreSQL**: 15+
@@ -51,18 +43,13 @@
 - **Nginx** (для production)
 
 #### Шаги для запуска backend:
-<<<<<<< HEAD
-
 =======
->>>>>>> 0ce98a2b24b7bab91f7286f901c82e9172a378d0
 1. Склонируйте репозиторий:
    ```bash
    git clone https://github.com/ваш-репозиторий.git
    cd ваш-репозиторий
-<<<<<<< HEAD
    ```
 =======
->>>>>>> 0ce98a2b24b7bab91f7286f901c82e9172a378d0
 2. Настройте файл application.properties или используйте переменные окружения:
    spring.datasource.url=jdbc:postgresql://localhost:5432/your_database
    spring.datasource.username=your_username
@@ -71,7 +58,6 @@
    mvn clean package
 4. Запустите Spring Boot:
    java -jar target/your_project-0.0.1-SNAPSHOT.jar
-<<<<<<< HEAD
 
 #### Шаги для запуска frontend:
 
@@ -104,7 +90,6 @@
     Vite выдаст URL для разработки, например http://localhost:5173.
 
 #### Технологии фронтенда
->>>>>>> 0ce98a2b24b7bab91f7286f901c82e9172a378d0
 Фронтенд построен с использованием следующих технологий:
 
 React.js: Библиотека для создания пользовательских интерфейсов.
@@ -113,7 +98,6 @@ Tailwind CSS: CSS-фреймворк с утилитарным подходом 
 Axios: HTTP-клиент для взаимодействия с API.
 
 ### Траблшутинг
-<<<<<<< HEAD
 
 # Ошибка подключения к базе данных:
 
@@ -135,4 +119,3 @@ mvn dependency:resolve
    Проверьте наличие всех зависимостей в pom.xml:
    mvn dependency:resolve
    Убедитесь, что Java и Maven установлены корректно.
->>>>>>> 0ce98a2b24b7bab91f7286f901c82e9172a378d0
