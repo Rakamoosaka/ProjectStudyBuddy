@@ -8,7 +8,7 @@ import useAuth from "../hooks/useAuth";
 import Footer from "../components/Footer";
 import tabsSVG from "../assets/svg/tabsSVG.svg";
 import EditProfilePopup from "../components/EditProfilePopup";
-import { toast, Slide } from "react-toastify";
+import { toast, Slide, Bounce } from "react-toastify";
 
 const Profile = () => {
   const { auth } = useAuth();
@@ -19,8 +19,8 @@ const Profile = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(null);
 
-  const notifyAvatarUpdate = () =>
-    toast.success("Avatar updated successfully!", {
+  const successToast = (text) =>
+    toast.success(text, {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -30,6 +30,18 @@ const Profile = () => {
       progress: undefined,
       theme: "light",
       transition: Slide,
+    });
+  const errorToast = (text) =>
+    toast.error(text, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
     });
   const toggleExpanded = () => {
     setIsExpanded((prevState) => !prevState);
@@ -158,12 +170,12 @@ const Profile = () => {
       );
 
       setAvatarUrl(response.data.avatarUrl);
-      notifyAvatarUpdate();
+      successToast("Avatar updated successfully!");
 
       handleProfileUpdate();
     } catch (error) {
       console.error("Error uploading cropped avatar:", error.message);
-      alert("Failed to upload/update avatar. Please try again.");
+      errorToast("Failed to upload/update avatar. Please try again.");
     }
   };
 
