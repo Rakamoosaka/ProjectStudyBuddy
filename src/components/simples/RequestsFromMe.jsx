@@ -53,7 +53,11 @@ const RequestsFromMe = () => {
                 className="flex items-center gap-4 cursor-pointer"
                 onClick={() => handleNavigateToProfile(request.receiverId)}
               >
-                <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+                <img
+                  src={request.receiverAvatarURL}
+                  alt="Receiver Avatar"
+                  className="w-12 h-12 bg-gray-300 rounded-full"
+                />
                 <div>
                   <span className="block text-base font-medium">
                     {request.receiverUsername}
