@@ -148,10 +148,10 @@ const SignUp = () => {
               onChange={(e) => setEmail(e.target.value)}
               onFocus={() => setEmailFocus(true)}
               onBlur={() => setEmailFocus(false)}
-              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+              className="w-full p-2 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
             <p
-              className={`text-xs mt-1 ${
+              className={`text-xs mt-1 mb-4${
                 emailFocus && !validEmail ? "text-[#b00000]" : "hidden"
               }`}
             >
@@ -169,10 +169,10 @@ const SignUp = () => {
               onChange={(e) => setUser(e.target.value)}
               onFocus={() => setUsernameFocus(true)}
               onBlur={() => setUsernameFocus(false)}
-              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+              className="w-full p-2 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
             <p
-              className={`text-xs mt-1 ${
+              className={`text-xs mt-1 mb-4${
                 usernameFocus && !validUsername ? "text-[#b00000]" : "hidden"
               }`}
             >
@@ -257,10 +257,10 @@ const SignUp = () => {
               onChange={(e) => setPassword(e.target.value)}
               onFocus={() => setPasswordFocus(true)}
               onBlur={() => setPasswordFocus(false)}
-              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+              className="w-full p-2 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
             <p
-              className={`text-xs mt-1 ${
+              className={`text-xs mt-1 mb-4 ${
                 passwordFocus && !validPassword ? "text-[#b00000]" : "hidden"
               }`}
             >
@@ -279,10 +279,10 @@ const SignUp = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               onFocus={() => setConfirmPasswordFocus(true)}
               onBlur={() => setConfirmPasswordFocus(false)}
-              className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
+              className="w-full p-2 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
             <p
-              className={`text-xs mt-1 ${
+              className={`text-xs mt-1 mb-4 ${
                 confirmPasswordFocus && !validMatch
                   ? "text-[#b00000]"
                   : "hidden"
