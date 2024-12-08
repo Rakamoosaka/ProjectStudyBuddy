@@ -8,7 +8,7 @@ import useAuth from "../hooks/useAuth";
 import Footer from "../components/Footer";
 import tabsSVG from "../assets/svg/tabsSVG.svg";
 import EditProfilePopup from "../components/EditProfilePopup";
-import { toast } from "react-toastify";
+import { toast, Slide } from "react-toastify";
 
 const Profile = () => {
   const { auth } = useAuth();
