@@ -151,7 +151,7 @@ const SignUp = () => {
               className="w-full p-2 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
             <p
-              className={`text-xs mt-1 mb-4${
+              className={`text-xs mt-1 mb-4 ${
                 emailFocus && !validEmail ? "text-[#b00000]" : "hidden"
               }`}
             >
@@ -172,7 +172,7 @@ const SignUp = () => {
               className="w-full p-2 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
             <p
-              className={`text-xs mt-1 mb-4${
+              className={`text-xs mt-1 mb-4 ${
                 usernameFocus && !validUsername ? "text-[#b00000]" : "hidden"
               }`}
             >
