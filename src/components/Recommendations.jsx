@@ -130,6 +130,11 @@ const Recommendations = () => {
               style={{ flex: "1 1 calc(33.333% - 1rem)" }}
               onClick={() => handleNavigateToProfile(rec.buddiesId)} // Navigate on click
             >
+              <img
+                src={rec.buddiesAvatarPath}
+                alt={rec.buddiesName}
+                className="w-16 h-16 rounded-lg object-cover"
+              />
               <h3 className="text-sm font-medium">{rec.buddiesName}</h3>
               <p className="text-xs text-gray-600 text-center">
                 You are good at: {rec.myHelpToBuddieSubjects || "N/A"}
