@@ -52,7 +52,11 @@ const MyFriends = () => {
                 className="flex items-center gap-3 cursor-pointer"
                 onClick={() => handleNavigateToProfile(friend.id)}
               >
-                <div className="w-10 h-10 bg-gray-400 rounded-full"></div>
+                <img
+                  src={friend.avatarPath}
+                  alt={friend.username}
+                  className="w-10 h-10 rounded-full"
+                />
                 <div className="flex flex-col">
                   <span className="text-base">{friend.username}</span>
                   <div className="flex mt-2 gap-1">
