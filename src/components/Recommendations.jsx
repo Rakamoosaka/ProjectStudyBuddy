@@ -133,7 +133,7 @@ const Recommendations = () => {
               <img
                 src={rec.buddiesAvatarPath}
                 alt={rec.buddiesName}
-                className="w-32 h-32 rounded-lg object-cover"
+                className="w-24 h-24 rounded-lg object-cover"
               />
               <h3 className="text-sm font-medium">{rec.buddiesName}</h3>
               <p className="text-xs text-gray-600 text-center">
