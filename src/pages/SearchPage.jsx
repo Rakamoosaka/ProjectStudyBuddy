@@ -237,7 +237,9 @@ const SearchPage = () => {
                 Loading results...
               </p>
             ) : errorMessage ? (
-              <p className="text-center text-lg text-red-500">{errorMessage}</p>
+              <p className="text-center text-lg text-[#b00000] font-semibold">
+                {errorMessage}
+              </p>
             ) : results.length === 0 ? (
               <p className="text-center text-lg text-[#274B6D]">
                 Click "Search" to view results!
