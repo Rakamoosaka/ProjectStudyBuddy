@@ -8,7 +8,7 @@ import useAuth from "../hooks/useAuth";
 import Footer from "../components/Footer";
 import tabsSVG from "../assets/svg/tabsSVG.svg";
 import EditProfilePopup from "../components/EditProfilePopup";
-import { toast, Slide, Bounce } from "react-toastify";
+import { errorToast, successToast } from "../utils/toastUtils";
 
 const Profile = () => {
   const { auth } = useAuth();
@@ -19,30 +19,6 @@ const Profile = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(null);
 
-  const successToast = (text) =>
-    toast.success(text, {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Slide,
-    });
-  const errorToast = (text) =>
-    toast.error(text, {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
   const toggleExpanded = () => {
     setIsExpanded((prevState) => !prevState);
   };
