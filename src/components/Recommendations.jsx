@@ -131,7 +131,7 @@ const Recommendations = () => {
               onClick={() => handleNavigateToProfile(rec.buddiesId)} // Navigate on click
             >
               <img
-                src={rec.buddiesAvatarPath}
+                src={rec.buddiesAvatarPath || "https://via.placeholder.com/150"}
                 alt={rec.buddiesName}
                 className="w-24 h-24 rounded-lg object-cover"
               />

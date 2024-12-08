@@ -55,7 +55,7 @@ const MyFriends = () => {
                 <img
                   src={friend.avatarPath || "https://via.placeholder.com/150"}
                   alt={friend.username}
-                  className="w-13 h-13 rounded-full"
+                  className="w-12 h-12 rounded-full"
                 />
                 <div className="flex flex-col">
                   <span className="text-base">{friend.username}</span>
