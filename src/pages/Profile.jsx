@@ -8,6 +8,7 @@ import useAuth from "../hooks/useAuth";
 import Footer from "../components/Footer";
 import tabsSVG from "../assets/svg/tabsSVG.svg";
 import EditProfilePopup from "../components/EditProfilePopup";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const { auth } = useAuth();
@@ -92,7 +93,6 @@ const Profile = () => {
       }
 
       setIsEditPopupOpen(false);
-      alert("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error.response || error.message);
     }
@@ -146,7 +146,7 @@ const Profile = () => {
       );
 
       setAvatarUrl(response.data.avatarUrl);
-      alert("Avatar updated successfully!");
+      toast("Avatar updated successfully.");
       handleProfileUpdate();
     } catch (error) {
       console.error("Error uploading cropped avatar:", error.message);
