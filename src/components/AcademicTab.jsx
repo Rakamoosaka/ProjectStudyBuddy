@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "../axios";
+import {
+  successToast,
+  errorToast,
+  infoToast,
+  warningToast,
+} from "../utils/toastUtils";
 
 const AcademicTab = ({ edit }) => {
   const [strengths, setStrengths] = useState([]);
@@ -46,7 +52,7 @@ const AcademicTab = ({ edit }) => {
       setAllDisciplines(response.data);
     } catch (err) {
       console.error("Error fetching all disciplines:", err);
-      alert("Failed to fetch all disciplines. Please try again.");
+      errorToast("Failed to fetch all disciplines. Please try again.");
     }
   };
 
@@ -58,7 +64,9 @@ const AcademicTab = ({ edit }) => {
   const handleAddDiscipline = async () => {
     const { id, skillLevel } = newDiscipline;
     if (!id || !skillLevel || skillLevel < 1 || skillLevel > 10) {
-      alert("Please provide a valid Discipline ID and Skill Level (1-10).");
+      warningToast(
+        "Please provide a valid Discipline ID and Skill Level (1-10)."
+      );
       return;
     }
 
@@ -72,19 +80,21 @@ const AcademicTab = ({ edit }) => {
           },
         }
       );
-      alert("Discipline added successfully!");
+      successToast("Discipline added successfully!");
       setNewDiscipline({ id: "", skillLevel: "" });
       fetchDisciplines();
     } catch (err) {
       console.error("Error adding discipline:", err);
-      alert("Failed to add discipline. Please try again.");
+      errorToast("Failed to add discipline. Please try again.");
     }
   };
 
   const handleEditDiscipline = async (id) => {
     const skillLevel = prompt("Enter new skill level (1-10):");
     if (!skillLevel || skillLevel < 1 || skillLevel > 10) {
-      alert("Invalid skill level. Please enter a value between 1 and 10.");
+      warningToast(
+        "Invalid skill level. Please enter a value between 1 and 10."
+      );
       return;
     }
 
@@ -98,11 +108,11 @@ const AcademicTab = ({ edit }) => {
           },
         }
       );
-      alert("Discipline updated successfully!");
+      successToast("Discipline updated successfully!");
       fetchDisciplines();
     } catch (err) {
       console.error("Error editing discipline:", err);
-      alert("Failed to update discipline. Please try again.");
+      errorToast("Failed to update discipline. Please try again.");
     }
   };
 
@@ -120,11 +130,11 @@ const AcademicTab = ({ edit }) => {
           },
         }
       );
-      alert("Discipline deleted successfully!");
+      successToast("Discipline deleted successfully!");
       fetchDisciplines();
     } catch (err) {
       console.error("Error deleting discipline:", err);
-      alert("Failed to delete discipline. Please try again.");
+      errorToast("Failed to delete discipline. Please try again.");
     }
   };
 
