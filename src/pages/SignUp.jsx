@@ -51,6 +51,11 @@ const SignUp = () => {
     setValidMatch(password === confirmPassword);
   }, [email, username, password, confirmPassword]);
 
+  const [emailFocus, setEmailFocus] = useState(false);
+  const [usernameFocus, setUsernameFocus] = useState(false);
+  const [passwordFocus, setPasswordFocus] = useState(false);
+  const [confirmPasswordFocus, setConfirmPasswordFocus] = useState(false);
+
   const handleRegister = async () => {
     if (!validEmail || !validUsername || !validPassword || !validMatch) {
       setErrorMsg("Please ensure all fields are filled out correctly.");
@@ -141,6 +146,8 @@ const SignUp = () => {
               placeholder="example@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onFocus={() => setEmailFocus(true)}
+              onBlur={() => setEmailFocus(false)}
               className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
             <p
@@ -160,6 +167,8 @@ const SignUp = () => {
               placeholder="Omar Abdulrahman"
               value={username}
               onChange={(e) => setUser(e.target.value)}
+              onFocus={() => setUsernameFocus(true)}
+              onBlur={() => setUsernameFocus(false)}
               className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
             <p
@@ -246,6 +255,8 @@ const SignUp = () => {
               placeholder="********"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onFocus={() => setPasswordFocus(true)}
+              onBlur={() => setPasswordFocus(false)}
               className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
             <p
@@ -266,6 +277,8 @@ const SignUp = () => {
               placeholder="********"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              onFocus={() => setConfirmPasswordFocus(true)}
+              onBlur={() => setConfirmPasswordFocus(false)}
               className="w-full p-2 mb-4 text-sm border border-[#162850] rounded-lg focus:outline-none bg-[#F6F7FF]"
             />
             <p
