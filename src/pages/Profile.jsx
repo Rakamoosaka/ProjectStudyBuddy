@@ -19,6 +19,7 @@ const Profile = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(null);
 
+  const notify = () => toast("Avatar updated successfully.");
   const toggleExpanded = () => {
     setIsExpanded((prevState) => !prevState);
   };
@@ -146,7 +147,8 @@ const Profile = () => {
       );
 
       setAvatarUrl(response.data.avatarUrl);
-      toast("Avatar updated successfully.");
+      notify();
+
       handleProfileUpdate();
     } catch (error) {
       console.error("Error uploading cropped avatar:", error.message);
