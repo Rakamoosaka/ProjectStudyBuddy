@@ -19,7 +19,18 @@ const Profile = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(null);
 
-  const notify = () => toast("Avatar updated successfully.");
+  const notifyAvatarUpdate = () =>
+    toast.success("Avatar updated successfully!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Slide,
+    });
   const toggleExpanded = () => {
     setIsExpanded((prevState) => !prevState);
   };
@@ -147,7 +158,7 @@ const Profile = () => {
       );
 
       setAvatarUrl(response.data.avatarUrl);
-      notify();
+      notifyAvatarUpdate();
 
       handleProfileUpdate();
     } catch (error) {
