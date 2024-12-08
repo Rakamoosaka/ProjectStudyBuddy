@@ -90,7 +90,7 @@ const RequestsToMe = () => {
                 onClick={() => handleNavigateToProfile(request.senderId)}
               >
                 <img
-                  className="w-10 h-10 bg-gray-300 rounded-full"
+                  className="w-12 h-12 bg-gray-300 rounded-full"
                   src={request.senderAvatarURL}
                   alt={request.senderUsername}
                 />
