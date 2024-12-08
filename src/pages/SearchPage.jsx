@@ -7,13 +7,11 @@ import axios from "../axios";
 
 const SearchPage = () => {
   const [filters, setFilters] = useState({
-    gender: "",
-    language: [],
+    gender: "null",
     subjects: [],
     country: false,
   });
   const [results, setResults] = useState([]);
-  const [languages, setLanguages] = useState([]); // To store dynamic languages
   const [disciplines, setDisciplines] = useState([]); // To store dynamic disciplines
   const [isToggled, setIsToggled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,19 +23,6 @@ const SearchPage = () => {
       Authorization: `Bearer ${localStorage.getItem("token")}`, // Add token from localStorage
     },
   });
-
-  // Fetch languages from the backend
-  useEffect(() => {
-    axiosInstance
-      .get("/user/profile/details") // Backend endpoint for languages
-      .then((response) => {
-        setLanguages(response.data.languages || []); // Assuming backend returns languages in "languages" key
-      })
-      .catch((error) => {
-        console.error("Error fetching languages:", error);
-        setErrorMessage("Failed to load languages. Try refreshing the page.");
-      });
-  }, []);
 
   // Fetch disciplines from the backend
   useEffect(() => {
@@ -131,7 +116,7 @@ const SearchPage = () => {
           Find your study buddy
         </h1>
         <p className="mb-6 text-center text-sm md:text-base">
-          Search for a study partner based on subjects, language, and location.
+          Search for a study partner based on subjects and location.
         </p>
 
         {/* Gender Filter */}
@@ -159,28 +144,11 @@ const SearchPage = () => {
             <input
               type="radio"
               name="gender"
-              value=""
-              onChange={() => setFilters({ ...filters, gender: "" })}
+              value="null"
+              onChange={() => setFilters({ ...filters, gender: "null" })}
             />{" "}
             Doesn't matter
           </label>
-          <hr className="border-t border-white mt-4 mb-4" />
-        </div>
-
-        {/* Language Filter */}
-        <div className="mb-4">
-          <label className="block mb-1 font-semibold">Language:</label>
-          {languages.map((language, index) => (
-            <label key={language.id} className="block">
-              <input
-                type="checkbox"
-                onChange={() =>
-                  handleCheckboxChange("language", language.languageName)
-                }
-              />{" "}
-              {language.languageName}
-            </label>
-          ))}
           <hr className="border-t border-white mt-4 mb-4" />
         </div>
 
@@ -240,7 +208,7 @@ const SearchPage = () => {
               <img
                 src={LogoImage}
                 alt="Study Buddy Logo"
-                className="h-8 md:h-12"
+                className="h-12 md:h-16"
               />
             </div>
           </Link>
