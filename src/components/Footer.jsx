@@ -17,8 +17,8 @@ export default function Footer() {
 
   const HandleGoToSearchPage = () => {
     const token = localStorage.getItem("token"); // Check for token in localStorage
-
-    if (token) {
+    const username = localStorage.getItem("username");
+    if (token && username) {
       navigate(`/searchpage`);
     } else {
       navigate(`/signin`); // Redirect to login page if no token is found
@@ -53,22 +53,6 @@ export default function Footer() {
           >
             Profile
           </button>
-        </div>
-
-        {/* Social Media Icons */}
-        <div className="flex space-x-6 text-center">
-          <a href="#" className="hover:text-gray-300" aria-label="Twitter">
-            <i className="fab fa-twitter text-lg"></i>
-          </a>
-          <a href="#" className="hover:text-gray-300" aria-label="Facebook">
-            <i className="fab fa-facebook text-lg"></i>
-          </a>
-          <a href="#" className="hover:text-gray-300" aria-label="Instagram">
-            <i className="fab fa-instagram text-lg"></i>
-          </a>
-          <a href="#" className="hover:text-gray-300" aria-label="LinkedIn">
-            <i className="fab fa-linkedin text-lg"></i>
-          </a>
         </div>
       </div>
 

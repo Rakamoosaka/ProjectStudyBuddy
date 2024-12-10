@@ -144,7 +144,7 @@ const SearchPage = () => {
             <input
               type="radio"
               name="gender"
-              onChange={() => setFilters({ ...filters, gender: "null" })}
+              onChange={() => setFilters({ ...filters, gender: null })}
             />{" "}
             Doesn't matter
           </label>
