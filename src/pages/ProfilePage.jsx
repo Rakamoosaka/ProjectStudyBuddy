@@ -134,9 +134,6 @@ const ProfilePage = () => {
           </p>
         </div>
         <div className="flex gap-4 mt-auto">
-          <button className="bg-[#C2DAE1] text-[#274B6D] px-4 py-2 cursor-pointer font-semibold rounded-lg">
-            Send a message
-          </button>
           {!isFriend &&
             !requestSent && ( // Show the button only if not a friend and request not sent
               <button

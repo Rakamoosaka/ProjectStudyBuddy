@@ -18,7 +18,6 @@ const DropdownWithBlob = () => {
 
   const dropdownButtons = [
     { label: "Profile", path: `/profile/${username}` },
-    { label: "Messages", path: "/chatpage" },
     { label: "About Us", path: "/about-us" },
   ];
 
