@@ -42,7 +42,7 @@ export default function Footer() {
             Home
           </Link>
           <button
-            onclick={HandleGoToSearchPage}
+            onClick={HandleGoToSearchPage}
             className="hover:text-gray-300 cursor-pointer bg-transparent border-none p-0 text-inherit"
           >
             Search for buddy
