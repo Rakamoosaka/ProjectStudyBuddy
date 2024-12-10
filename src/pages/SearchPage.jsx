@@ -7,7 +7,7 @@ import axios from "../axios";
 
 const SearchPage = () => {
   const [filters, setFilters] = useState({
-    gender: "null",
+    gender: null,
     subjects: [],
     country: false,
   });
@@ -144,7 +144,6 @@ const SearchPage = () => {
             <input
               type="radio"
               name="gender"
-              value="null"
               onChange={() => setFilters({ ...filters, gender: "null" })}
             />{" "}
             Doesn't matter
